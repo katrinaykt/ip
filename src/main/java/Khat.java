@@ -3,25 +3,35 @@ import java.util.Scanner;
 public class Khat {
     public static void main(String[] args) {
 
-        String command;
         int commandCounter = 0;
-        String[] commandList = new String[100];
+        Task[] tasksList = new Task[100];
         Scanner userInputScanner = new Scanner(System.in);
 
         System.out.println("Hello! I'm Khat.\nWhat can I do for you?");
-        command = userInputScanner.nextLine();
-        while (!command.equals("bye")) {
-            if (command.equals("list")) {
+        String command = userInputScanner.nextLine(); // task description
+        Task t = new Task(command);
+
+        while (!t.getCommand().equals("bye")) {
+            if (t.getCommand().equals("list")) {
+
+                System.out.println("List of tasks:");
                 for (int i = 0; i < commandCounter; i++) {
-                    String currCommand = commandList[i];
-                    System.out.println(i + 1 + ". " + currCommand);
+                    Task currTask = tasksList[i];
+                    System.out.println(i + 1 + "." + currTask.toString());
                 }
-                command = userInputScanner.nextLine();
-            } else {
-                System.out.println("added: " + command);
-                commandList[commandCounter] = command;
+                t = new Task(userInputScanner.nextLine());
+
+            } else if (t.getCommand().contains("mark")) {
+                int index = t.getIndexTask() - 1;
+                Task curr = tasksList[index];
+                curr.markAsDone();
+                t = new Task(userInputScanner.nextLine());
+
+            } else { //adding tasks
+                System.out.println(t.addTaskDisplay());
+                tasksList[commandCounter] = t;
                 commandCounter++;
-                command = userInputScanner.nextLine();
+                t = new Task(userInputScanner.nextLine());
             }
 
         }
