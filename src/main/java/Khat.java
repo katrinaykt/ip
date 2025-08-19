@@ -21,8 +21,14 @@ public class Khat {
                 }
                 t = new Task(userInputScanner.nextLine());
 
+            } else if (t.getCommand().contains("unmark")) {
+                int index = t.getTaskIndex();
+                Task curr = tasksList[index];
+                curr.markAsNotDone();
+                t = new Task(userInputScanner.nextLine());
+
             } else if (t.getCommand().contains("mark")) {
-                int index = t.getIndexTask() - 1;
+                int index = t.getTaskIndex();
                 Task curr = tasksList[index];
                 curr.markAsDone();
                 t = new Task(userInputScanner.nextLine());
@@ -32,6 +38,7 @@ public class Khat {
                 tasksList[commandCounter] = t;
                 commandCounter++;
                 t = new Task(userInputScanner.nextLine());
+
             }
 
         }
