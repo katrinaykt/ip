@@ -1,10 +1,10 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Khat {
     public static void main(String[] args) {
 
-        int commandCounter = 0;
-        Task[] tasksList = new Task[100];
+        ArrayList<Task> tasksList = new ArrayList<>();
         Scanner userInputScanner = new Scanner(System.in);
 
         System.out.println("Hello! I'm Khat.\nWhat can I do for you?");
@@ -20,23 +20,29 @@ public class Khat {
             if (type.equals("list")) {
 
                 System.out.println("List of tasks:");
-                for (int i = 0; i < commandCounter; i++) {
-                    Task currTask = tasksList[i];
+                for (int i = 0; i < tasksList.size(); i++) {
+                    Task currTask = tasksList.get(i);
                     System.out.println(i + 1 + "." + currTask.toString());
                 }
 
-            } else if (type.equals("unmark")) {
+            } else if (type.equals("bye")) { //close chatbot
+                break;
+            } else if (type.equals("unmark")) { //mark task as incomplete
                 int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                Task curr = tasksList[index];
+                Task curr = tasksList.get(index);
                 curr.markAsNotDone();
 
-            } else if (type.equals("mark")) {
+            } else if (type.equals("mark")) { //mark task as complete
                 int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                Task curr = tasksList[index];
+                Task curr = tasksList.get(index);
                 curr.markAsDone();
 
-            } else if (type.equals("bye")) {
-                break;
+            } else if (type.equals("delete")) {
+                int index = Integer.parseInt(command.split(" ")[1]) - 1;
+                Task t = tasksList.remove(index);
+                t.removeTaskDisplay();
+                System.out.println("There are " + tasksList.size() + " remaining tasks.");
+
             } else if (type.equals("todo") || type.equals("deadline") || type.equals("event")) { //adding tasks
 
                 if (description.trim().isEmpty() || description.equals("todo") || description.equals("deadline") || description.equals("event")) {
@@ -45,13 +51,15 @@ public class Khat {
 
                 // CREATE NEW TASK IN ARRAY
                 if (type.equals("todo")) { // todo task
-                    tasksList[commandCounter] = new Todo(description);
+                    Task t = new Todo(description);
+                    tasksList.add(t);
                 } else if (type.equals("deadline")) { // deadline task
                     String by = taskArr[1].substring(taskArr[1].indexOf("by") + 2).trim();
                     if (by.isEmpty()) { //empty deadline
                         throw new DeadlineTaskException("Add a deadline!");
                     }
-                    tasksList[commandCounter] = new Deadline(description, by);
+                    Task t = new Deadline(description, by);
+                    tasksList.add(t);
 
                 } else { // event task, assume no invalid inputs and only 3 types of task
                     String from = taskArr[1].substring(taskArr[1].indexOf("from") + 4).trim();
@@ -63,12 +71,13 @@ public class Khat {
                     } else if (to.isEmpty()) {
                         throw new EventTaskException("Add a end date/time!");
                     }
-                    tasksList[commandCounter] = new Event(description, from, to);
+                    Task t = new Event(description, from, to);
+                    tasksList.add(t);
                 }
 
-                System.out.println(tasksList[commandCounter].addTaskDisplay());
-                commandCounter++;
-                System.out.println("Now you have " + commandCounter + " tasks in the list.");
+                int lastIndex = tasksList.size() - 1;
+                tasksList.get(lastIndex).addTaskDisplay();
+                System.out.println("Now you have " + tasksList.size() + " tasks in the list.");
 
             } else {
                 throw new InvalidTaskException("Invalid task!");
