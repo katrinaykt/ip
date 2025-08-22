@@ -1,10 +1,9 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Khat {
     public static void main(String[] args) {
 
-        ArrayList<Task> tasksList = new ArrayList<>();
+        TaskList tasksList = new TaskList();
         Scanner userInputScanner = new Scanner(System.in);
 
         System.out.println("Hello! I'm Khat.\nWhat can I do for you?");
@@ -18,30 +17,22 @@ public class Khat {
 
             // CARRY OUT TASK COMMAND
             if (type.equals("list")) {
-
-                System.out.println("List of tasks:");
-                for (int i = 0; i < tasksList.size(); i++) {
-                    Task currTask = tasksList.get(i);
-                    System.out.println(i + 1 + "." + currTask.toString());
-                }
-
+                tasksList.getList();
             } else if (type.equals("bye")) { //close chatbot
                 break;
             } else if (type.equals("unmark")) { //mark task as incomplete
                 int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                Task curr = tasksList.get(index);
+                Task curr = tasksList.getTask(index);
                 curr.markAsNotDone();
 
             } else if (type.equals("mark")) { //mark task as complete
                 int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                Task curr = tasksList.get(index);
+                Task curr = tasksList.getTask(index);
                 curr.markAsDone();
 
             } else if (type.equals("delete")) {
                 int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                Task t = tasksList.remove(index);
-                t.removeTaskDisplay();
-                System.out.println("There are " + tasksList.size() + " remaining tasks.");
+                tasksList.removeTask(index);
 
             } else if (type.equals("todo") || type.equals("deadline") || type.equals("event")) { //adding tasks
 
@@ -52,16 +43,16 @@ public class Khat {
                 // CREATE NEW TASK IN ARRAY
                 if (type.equals("todo")) { // todo task
                     Task t = new Todo(description);
-                    tasksList.add(t);
+                    tasksList.addTask(t);
                 } else if (type.equals("deadline")) { // deadline task
                     String by = taskArr[1].substring(taskArr[1].indexOf("by") + 2).trim();
                     if (by.isEmpty()) { //empty deadline
                         throw new DeadlineTaskException("Add a deadline!");
                     }
                     Task t = new Deadline(description, by);
-                    tasksList.add(t);
+                    tasksList.addTask(t);
 
-                } else { // event task, assume no invalid inputs and only 3 types of task
+                } else {
                     String from = taskArr[1].substring(taskArr[1].indexOf("from") + 4).trim();
                     String to = taskArr[2].substring(taskArr[2].indexOf("to") + 2).trim();
                     if (from.isEmpty() && to.isEmpty()) {
@@ -72,12 +63,8 @@ public class Khat {
                         throw new EventTaskException("Add a end date/time!");
                     }
                     Task t = new Event(description, from, to);
-                    tasksList.add(t);
+                    tasksList.addTask(t);
                 }
-
-                int lastIndex = tasksList.size() - 1;
-                tasksList.get(lastIndex).addTaskDisplay();
-                System.out.println("Now you have " + tasksList.size() + " tasks in the list.");
 
             } else {
                 throw new InvalidTaskException("Invalid task!");
