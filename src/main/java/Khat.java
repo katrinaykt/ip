@@ -3,8 +3,9 @@ import java.util.Scanner;
 public class Khat {
     public static void main(String[] args) {
 
-        TaskList tasksList = new TaskList();
         Scanner userInputScanner = new Scanner(System.in);
+        Storage storage = new Storage("./data/KhatTasks.txt");
+        TaskList tasksList = storage.loadTasks();
 
         System.out.println("Hello! I'm Khat.\nWhat can I do for you?");
 
@@ -42,14 +43,14 @@ public class Khat {
 
                 // CREATE NEW TASK IN ARRAY
                 if (type.equals("todo")) { // todo task
-                    Task t = new Todo(description);
+                    Task t = new Todo(description, false);
                     tasksList.addTask(t);
                 } else if (type.equals("deadline")) { // deadline task
                     String by = taskArr[1].substring(taskArr[1].indexOf("by") + 2).trim();
-                    if (by.isEmpty()) { //empty deadline
+                    if (by.isEmpty()) { // empty deadline
                         throw new DeadlineTaskException("Add a deadline!");
                     }
-                    Task t = new Deadline(description, by);
+                    Task t = new Deadline(description, false, by);
                     tasksList.addTask(t);
 
                 } else {
@@ -62,7 +63,7 @@ public class Khat {
                     } else if (to.isEmpty()) {
                         throw new EventTaskException("Add a end date/time!");
                     }
-                    Task t = new Event(description, from, to);
+                    Task t = new Event(description, false, from, to);
                     tasksList.addTask(t);
                 }
 
@@ -70,6 +71,7 @@ public class Khat {
                 throw new InvalidTaskException("Invalid task!");
             }
         }
+        storage.saveTasks(tasksList);
         System.out.println("Bye. Hope to see you again soon!");
     }
 }
