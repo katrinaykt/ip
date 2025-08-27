@@ -6,6 +6,6 @@ public class InvalidTaskException extends RuntimeException {
 
     @Override
     public String toString() {
-        return "I don't understand :(, try adding todo/deadline/event before the task!";
+        return getMessage();
     }
 }

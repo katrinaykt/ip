@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class TaskList {
@@ -34,6 +35,30 @@ public class TaskList {
         Task t = tasksList.remove(index);
         System.out.println("Ok, I've removed this task:\n" + t.toString());
         System.out.println("There are " + tasksList.size() + " remaining tasks.");
+    }
+
+    public void printTasksOnDate(LocalDate date) {
+        int count = 0;
+        System.out.println("Deadlines on " + date + ":");
+        for (int i = 0; i < tasksList.size(); i++) {
+            Task currTask = tasksList.get(i);
+            boolean match = false;
+            if (currTask instanceof Deadline) {
+                Deadline d = (Deadline) currTask;
+                if (d.hasTime()) {
+                    match = d.dateTime.toLocalDate().equals(date);
+                } else {
+                    match = d.date.equals(date);
+                }
+            }
+            if (match) {
+                System.out.println(count + 1 + "." + currTask.toString());
+                count++;
+            }
+        }
+        if (count == 0) {
+            System.out.println("No deadlines on " + date);
+        }
     }
 
     public void getList() {
