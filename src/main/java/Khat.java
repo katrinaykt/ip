@@ -1,19 +1,26 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Scanner;
 
 public class Khat {
+
+//    public Ui ui;
+//
+//    public Khat(String filePath) {
+//        ui = new Ui();
+//        storage = new Storage(filePath);
+//    }
+
     public static void main(String[] args) {
 
-        Scanner userInputScanner = new Scanner(System.in);
         Storage storage = new Storage("./data/KhatTasks.txt");
         TaskList tasksList = storage.loadTasks();
+        Ui ui = new Ui();
 
-        System.out.println("Hello! I'm Khat.\nWhat can I do for you?");
+        ui.showWelcome();
 
         while (true) {
-            String command = userInputScanner.nextLine(); // task description with type
+            String command = ui.readCommand(); // task description with type
             String[] taskArr = command.split("/"); // idx 0 - description, 1 - by/from, 2 - to
             String type = command.split(" ")[0]; // type of task/ mark/unmark
             String description = taskArr[0].substring(taskArr[0].indexOf(' ') + 1).trim(); // task description
@@ -21,7 +28,7 @@ public class Khat {
 
             // CARRY OUT TASK COMMAND
             if (type.equals("list")) {
-                tasksList.getList();
+                tasksList.getTaskList();
             } else if (type.equals("bye")) { //close chatbot
                 break;
             } else if (type.equals("unmark")) { //mark task as incomplete
@@ -38,12 +45,12 @@ public class Khat {
                 int index = Integer.parseInt(command.split(" ")[1]) - 1;
                 tasksList.removeTask(index);
 
-            } else if (type.equals("date")) {
+            } else if (type.equals("date")) { //shows deadline tasks on specified date
                 try {
                     LocalDate date = LocalDate.parse(description, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                     tasksList.printTasksOnDate(date);
                 } catch (DateTimeParseException e) {
-                    throw new InvalidTaskException("Please use dates in the format dd-MM-yyyy!");
+                    throw new KhatException("Invalid command! Please use dates in the format dd-MM-yyyy!");
                 }
 
             } else if (type.equals("todo") || type.equals("deadline") || type.equals("event")) { //adding tasks
@@ -79,10 +86,10 @@ public class Khat {
                 }
 
             } else {
-                throw new InvalidTaskException("Invalid task!");
+                throw new KhatException("Invalid task!");
             }
         }
         storage.saveTasks(tasksList);
-        System.out.println("Bye. Hope to see you again soon!");
+        ui.showExit();
     }
 }
