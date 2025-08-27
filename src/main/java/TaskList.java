@@ -8,8 +8,16 @@ public class TaskList {
         tasksList = new ArrayList<>();
     }
 
+    public TaskList(ArrayList<Task> tasksList) {
+        this.tasksList = tasksList;
+    }
+
     public Task getTask(int index) {
         return tasksList.get(index);
+    }
+
+    public ArrayList<Task> getAllTasks() {
+        return tasksList;
     }
 
     public int getSize() {
