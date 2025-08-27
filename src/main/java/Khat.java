@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Khat {
@@ -34,6 +37,14 @@ public class Khat {
             } else if (type.equals("delete")) {
                 int index = Integer.parseInt(command.split(" ")[1]) - 1;
                 tasksList.removeTask(index);
+
+            } else if (type.equals("date")) {
+                try {
+                    LocalDate date = LocalDate.parse(description, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                    tasksList.printTasksOnDate(date);
+                } catch (DateTimeParseException e) {
+                    throw new InvalidTaskException("Please use dates in the format dd-MM-yyyy!");
+                }
 
             } else if (type.equals("todo") || type.equals("deadline") || type.equals("event")) { //adding tasks
 
