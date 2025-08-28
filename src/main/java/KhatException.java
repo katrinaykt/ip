@@ -1,6 +1,6 @@
-public class InvalidTaskException extends RuntimeException {
+public class KhatException extends RuntimeException {
 
-    public InvalidTaskException(String message) {
+    public KhatException(String message) {
         super(message);
     }
 

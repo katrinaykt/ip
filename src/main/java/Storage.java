@@ -20,21 +20,19 @@ public class Storage {
         }
     }
 
-    public TaskList loadTasks() {
+    public ArrayList<Task> loadTasks() throws FileNotFoundException {
         ArrayList<Task> tasks = new ArrayList<>();
         if (!KhatTasks.exists()) {
-            return new TaskList(tasks);
+            return tasks;
         }
         try (Scanner scanner = new Scanner(KhatTasks)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                Task task = Task.parse(line);
+                Task task = Task.parseTask(line);
                 tasks.add(task);
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error loading tasks: " + e.getMessage());
         }
-        return new TaskList(tasks);
+        return tasks;
     }
 
     public void saveTasks(TaskList tasks) {
