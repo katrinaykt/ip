@@ -1,3 +1,10 @@
+package khat.command;
+
+import khat.exception.KhatException;
+import khat.storage.Storage;
+import khat.task.*;
+import khat.ui.Ui;
+
 public class DeleteCommand extends Command {
 
     private int index;

@@ -1,3 +1,11 @@
+package khat;
+
+import khat.command.*;
+import khat.exception.DeadlineTaskException;
+import khat.exception.EmptyTaskException;
+import khat.exception.EventTaskException;
+import khat.exception.KhatException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;

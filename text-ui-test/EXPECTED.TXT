@@ -1,4 +1,4 @@
-Hello! I'm Khat.
+Hello! I'm khat.Khat.
 What can I do for you?
 Got it. I've added this task:
 [T][ ] read book

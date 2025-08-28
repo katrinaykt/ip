@@ -1,3 +1,11 @@
+package khat.command;
+
+import khat.exception.KhatException;
+import khat.storage.Storage;
+import khat.task.Task;
+import khat.task.TaskList;
+import khat.ui.Ui;
+
 public class UnmarkCommand extends Command {
 
     private int index;

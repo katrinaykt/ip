@@ -1,3 +1,8 @@
+package khat.storage;
+
+import khat.task.Task;
+import khat.task.TaskList;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -44,7 +49,5 @@ public class Storage {
             System.out.println("Error saving tasks: " + e.getMessage());
         }
     }
-
-
 
 }

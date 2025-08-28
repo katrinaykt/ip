@@ -1,9 +1,11 @@
+package khat.ui;
+
 import java.util.Scanner;
 
 public class Ui {
 
     private Scanner scanner = new Scanner(System.in);
-    private static final String DIVIDER = "______________________________";
+    private static final String DIVIDER = "___________________________________";
 
     public void showWelcome() {
         System.out.println("Hello! I'm Khat.\nStart keeping track of all your tasks by sending a short command!");
