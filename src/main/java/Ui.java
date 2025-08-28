@@ -25,4 +25,8 @@ public class Ui {
         System.out.println("Error loading previous tasks! Creating a new task list.");
     }
 
+    public void showMessage(String message) {
+        System.out.println(message);
+    }
+
 }

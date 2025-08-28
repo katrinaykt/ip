@@ -28,7 +28,7 @@ public class Storage {
         try (Scanner scanner = new Scanner(KhatTasks)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                Task task = Task.parse(line);
+                Task task = Task.parseTask(line);
                 tasks.add(task);
             }
         }

@@ -4,6 +4,10 @@ import java.time.format.DateTimeParseException;
 
 public class Parser {
 
+    public enum CommandType {
+        LIST, BYE, MARK, UNMARK, DELETE, DATE, TODO, DEADLINE, EVENT, UNKNOWN
+    }
+
     public static String getType(String command) {
         return command.split(" ")[0];
     }
@@ -15,6 +19,39 @@ public class Parser {
             throw new EmptyTaskException("Task description cannot be empty!");
         }
         return description;
+    }
+
+    public static CommandType getCommandType(String command) {
+        String type = getType(command);
+        switch (type) {
+            case "list": return CommandType.LIST;
+            case "bye": return CommandType.BYE;
+            case "mark": return CommandType.MARK;
+            case "unmark": return CommandType.UNMARK;
+            case "delete": return CommandType.DELETE;
+            case "date": return CommandType.DATE;
+            case "todo": return CommandType.TODO;
+            case "deadline": return CommandType.DEADLINE;
+            case "event": return CommandType.EVENT;
+            default: return CommandType.UNKNOWN;
+        }
+    }
+
+    public static Command parse(String command) throws KhatException {
+        CommandType type = getCommandType(command);
+        String description = getDescription(command);
+        switch (type) {
+            case LIST: return new ListCommand();
+            case BYE: return new ExitCommand();
+            case MARK: return new MarkCommand(getIndex(command));
+            case UNMARK: return new UnmarkCommand(getIndex(command));
+            case DELETE: return new DeleteCommand(getIndex(command));
+            case DATE: return new DateCommand(description);
+            case TODO: return new AddCommand(description, "todo");
+            case DEADLINE: return new AddCommand(description, "deadline", getDeadline(command));
+            case EVENT: return new AddCommand(description, "event", getFrom(command), getTo(command));
+            default: throw new KhatException("Invalid command!");
+        }
     }
 
     public static int getIndex(String command) {

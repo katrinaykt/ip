@@ -27,14 +27,14 @@ public class TaskList {
 
     public void addTask(Task t) {
         tasksList.add(t);
-        System.out.println("Got it. I've added this task:\n" + t.toString());
-        System.out.println("Now you have " + tasksList.size() + " tasks in the list.");
+//        System.out.println("Got it. I've added this task:\n" + t.toString());
+//        System.out.println("Now you have " + tasksList.size() + " tasks in the list.");
     }
 
     public void removeTask(int index) {
-        Task t = tasksList.remove(index);
-        System.out.println("Ok, I've removed this task:\n" + t.toString());
-        System.out.println("There are " + tasksList.size() + " remaining tasks.");
+        tasksList.remove(index);
+//        System.out.println("Ok, I've removed this task:\n" + t.toString());
+//        System.out.println("There are " + tasksList.size() + " remaining tasks.");
     }
 
     public void printTasksOnDate(LocalDate date) {
