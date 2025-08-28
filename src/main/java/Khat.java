@@ -1,3 +1,4 @@
+import javax.xml.xpath.XPathEvaluationResult;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -14,10 +15,8 @@ public class Khat {
 
         while (true) {
             String command = ui.readCommand(); // task description with type
-            String[] taskArr = command.split("/"); // idx 0 - description, 1 - by/from, 2 - to
-            String type = command.split(" ")[0]; // type of task/ mark/unmark
+            String type = Parser.getType(command); // type of task/ mark/unmark/delete/list/bye/date
             String description = Parser.getDescription(command);
-
 
             // CARRY OUT TASK COMMAND
             if (type.equals("list")) {
@@ -37,7 +36,7 @@ public class Khat {
 
             } else if (type.equals("date")) { //shows deadline tasks on specified date
                 try {
-                    LocalDate date = LocalDate.parse(description, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                    LocalDate date = Parser.parseDate(description);
                     tasksList.printTasksOnDate(date);
                 } catch (DateTimeParseException e) {
                     throw new KhatException("Invalid command! Please use dates in the format dd-MM-yyyy!");
@@ -45,32 +44,19 @@ public class Khat {
 
             } else if (type.equals("todo") || type.equals("deadline") || type.equals("event")) { //adding tasks
 
-                if (description.trim().isEmpty() || description.equals("todo") || description.equals("deadline") || description.equals("event")) {
-                    throw new EmptyTaskException("Task description cannot be empty!");
-                }
-
                 // CREATE NEW TASK IN ARRAY
                 if (type.equals("todo")) { // todo task
                     Task t = new Todo(description, false);
                     tasksList.addTask(t);
+
                 } else if (type.equals("deadline")) { // deadline task
-                    String by = taskArr[1].substring(taskArr[1].indexOf("by") + 2).trim();
-                    if (by.isEmpty()) { // empty deadline
-                        throw new DeadlineTaskException("Add a deadline!");
-                    }
+                    String by = Parser.getDeadline(command);
                     Task t = new Deadline(description, false, by);
                     tasksList.addTask(t);
 
                 } else {
-                    String from = taskArr[1].substring(taskArr[1].indexOf("from") + 4).trim();
-                    String to = taskArr[2].substring(taskArr[2].indexOf("to") + 2).trim();
-                    if (from.isEmpty() && to.isEmpty()) {
-                        throw new EventTaskException("Add a start and end date/time!");
-                    } else if (from.isEmpty()) {
-                        throw new EventTaskException("Add a start date/time!");
-                    } else if (to.isEmpty()) {
-                        throw new EventTaskException("Add a end date/time!");
-                    }
+                    String from = Parser.getFrom(command);
+                    String to = Parser.getTo(command);
                     Task t = new Event(description, false, from, to);
                     tasksList.addTask(t);
                 }
