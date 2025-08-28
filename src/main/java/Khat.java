@@ -1,16 +1,25 @@
-import javax.xml.xpath.XPathEvaluationResult;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class Khat {
 
-    public static void main(String[] args) {
+    private Storage storage;
+    private TaskList tasks;
+    private Ui ui;
 
-        Storage storage = new Storage("./data/KhatTasks.txt");
-        TaskList tasksList = storage.loadTasks();
-        Ui ui = new Ui();
-
+    public Khat(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
+        try {
+            tasks = new TaskList(storage.loadTasks());
+        } catch (FileNotFoundException e) {
+            ui.showLoadingError();
+            tasks = new TaskList();
+        }
+    }
+    
+    public void run() {
         ui.showWelcome();
 
         while (true) {
@@ -20,24 +29,24 @@ public class Khat {
 
             // CARRY OUT TASK COMMAND
             if (type.equals("list")) {
-                tasksList.getTaskList();
+                tasks.getTaskList();
             } else if (type.equals("bye")) { //close chatbot
                 break;
             } else if (type.equals("unmark")) { //mark task as incomplete
-                Task curr = tasksList.getTask(Parser.getIndex(command));
+                Task curr = tasks.getTask(Parser.getIndex(command));
                 curr.markAsNotDone();
 
             } else if (type.equals("mark")) { //mark task as complete
-                Task curr = tasksList.getTask(Parser.getIndex(command));
+                Task curr = tasks.getTask(Parser.getIndex(command));
                 curr.markAsDone();
 
             } else if (type.equals("delete")) {
-                tasksList.removeTask(Parser.getIndex(command));
+                tasks.removeTask(Parser.getIndex(command));
 
             } else if (type.equals("date")) { //shows deadline tasks on specified date
                 try {
                     LocalDate date = Parser.parseDate(description);
-                    tasksList.printTasksOnDate(date);
+                    tasks.printTasksOnDate(date);
                 } catch (DateTimeParseException e) {
                     throw new KhatException("Invalid command! Please use dates in the format dd-MM-yyyy!");
                 }
@@ -47,25 +56,29 @@ public class Khat {
                 // CREATE NEW TASK IN ARRAY
                 if (type.equals("todo")) { // todo task
                     Task t = new Todo(description, false);
-                    tasksList.addTask(t);
+                    tasks.addTask(t);
 
                 } else if (type.equals("deadline")) { // deadline task
                     String by = Parser.getDeadline(command);
                     Task t = new Deadline(description, false, by);
-                    tasksList.addTask(t);
+                    tasks.addTask(t);
 
                 } else {
                     String from = Parser.getFrom(command);
                     String to = Parser.getTo(command);
                     Task t = new Event(description, false, from, to);
-                    tasksList.addTask(t);
+                    tasks.addTask(t);
                 }
 
             } else {
                 throw new KhatException("Invalid task!");
             }
         }
-        storage.saveTasks(tasksList);
+        storage.saveTasks(tasks);
         ui.showExit();
+    }
+
+    public static void main(String[] args) {
+        new Khat("./data/KhatTasks.txt").run();
     }
 }

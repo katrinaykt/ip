@@ -6,7 +6,7 @@ public class Ui {
     private static final String DIVIDER = "______________________________";
 
     public void showWelcome() {
-        System.out.println("Hello! I'm Khat.\nWhat can I do for you?");
+        System.out.println("Hello! I'm Khat.\nStart keeping track of all your tasks by sending a short command!");
     }
 
     public void showExit() {
@@ -21,8 +21,8 @@ public class Ui {
         System.out.println(DIVIDER);
     }
 
-    public void showError(String message) {
-        System.out.println(message);
+    public void showLoadingError() {
+        System.out.println("Error loading previous tasks! Creating a new task list.");
     }
 
 }

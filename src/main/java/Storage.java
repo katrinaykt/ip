@@ -20,10 +20,10 @@ public class Storage {
         }
     }
 
-    public TaskList loadTasks() {
+    public ArrayList<Task> loadTasks() throws FileNotFoundException {
         ArrayList<Task> tasks = new ArrayList<>();
         if (!KhatTasks.exists()) {
-            return new TaskList(tasks);
+            return tasks;
         }
         try (Scanner scanner = new Scanner(KhatTasks)) {
             while (scanner.hasNextLine()) {
@@ -31,10 +31,8 @@ public class Storage {
                 Task task = Task.parse(line);
                 tasks.add(task);
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error loading tasks: " + e.getMessage());
         }
-        return new TaskList(tasks);
+        return tasks;
     }
 
     public void saveTasks(TaskList tasks) {
