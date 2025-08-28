@@ -4,13 +4,6 @@ import java.time.format.DateTimeParseException;
 
 public class Khat {
 
-//    public Ui ui;
-//
-//    public Khat(String filePath) {
-//        ui = new Ui();
-//        storage = new Storage(filePath);
-//    }
-
     public static void main(String[] args) {
 
         Storage storage = new Storage("./data/KhatTasks.txt");
@@ -23,7 +16,7 @@ public class Khat {
             String command = ui.readCommand(); // task description with type
             String[] taskArr = command.split("/"); // idx 0 - description, 1 - by/from, 2 - to
             String type = command.split(" ")[0]; // type of task/ mark/unmark
-            String description = taskArr[0].substring(taskArr[0].indexOf(' ') + 1).trim(); // task description
+            String description = Parser.getDescription(command);
 
 
             // CARRY OUT TASK COMMAND
@@ -32,18 +25,15 @@ public class Khat {
             } else if (type.equals("bye")) { //close chatbot
                 break;
             } else if (type.equals("unmark")) { //mark task as incomplete
-                int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                Task curr = tasksList.getTask(index);
+                Task curr = tasksList.getTask(Parser.getIndex(command));
                 curr.markAsNotDone();
 
             } else if (type.equals("mark")) { //mark task as complete
-                int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                Task curr = tasksList.getTask(index);
+                Task curr = tasksList.getTask(Parser.getIndex(command));
                 curr.markAsDone();
 
             } else if (type.equals("delete")) {
-                int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                tasksList.removeTask(index);
+                tasksList.removeTask(Parser.getIndex(command));
 
             } else if (type.equals("date")) { //shows deadline tasks on specified date
                 try {

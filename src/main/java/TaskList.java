@@ -61,7 +61,7 @@ public class TaskList {
         }
     }
 
-    public ArrayList<Task> getTaskList() {
+    public void getTaskList() {
         System.out.println("List of tasks:");
         for (int i = 0; i < this.getSize(); i++) {
             Task currTask = tasksList.get(i);
