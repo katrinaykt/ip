@@ -1,5 +1,13 @@
+package khat.command;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+
+import khat.Parser;
+import khat.exception.KhatException;
+import khat.storage.Storage;
+import khat.task.*;
+import khat.ui.Ui;
 
 public class DateCommand extends Command {
 
