@@ -1,9 +1,17 @@
 package khat.task;
 
+/** Represents an abstract Task with a description and completion status */
 public abstract class Task {
+
     protected String description;
     protected boolean isDone;
 
+    /**
+     * Constructs a Task with the given description and completion status.
+     *
+     * @param description Description of Task.
+     * @param isDone True if Task is completed, false otherwise.
+     */
     public Task(String description, boolean isDone) {
         this.description = description;
         this.isDone = isDone;
@@ -13,6 +21,11 @@ public abstract class Task {
         return this.description;
     }
 
+    /**
+     * Returns completion status of the Task in the form of a string.
+     *
+     * @return "X" if completed, " " otherwise.
+     */
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }
@@ -25,30 +38,12 @@ public abstract class Task {
         this.isDone = false;
     }
 
+    /**
+     * Returns a string representation of task for file storage.
+     *
+     * @return String for saving to file.
+     */
     public abstract String toSaveString();
-
-    public static Task parseTask(String line) {
-        String[] parts = line.split(" \\| ");
-        String type = parts[0];
-        boolean isDone = parts[1].equals("1");
-        String description = parts[2];
-
-        switch (type) {
-            case "T":
-                return new Todo(description, isDone);
-            case "D":
-                String by = parts[3];
-                return new Deadline(description, isDone, by);
-            case "E":
-                String duration = parts[3];
-                String[] fromTo = duration.split("-");
-                String from = fromTo[0];
-                String to = fromTo[1];
-                return new Event(description, isDone, from, to);
-            default:
-                throw new IllegalArgumentException("Unknown task type: " + type);
-        }
-    }
 
     @Override
     public String toString() {

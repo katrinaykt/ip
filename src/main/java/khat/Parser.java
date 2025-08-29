@@ -5,6 +5,10 @@ import khat.exception.DeadlineTaskException;
 import khat.exception.EmptyTaskException;
 import khat.exception.EventTaskException;
 import khat.exception.KhatException;
+import khat.task.Deadline;
+import khat.task.Event;
+import khat.task.Task;
+import khat.task.Todo;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -88,6 +92,29 @@ public class Parser {
             throw new EventTaskException("Add an event task in the format 'event [task] /from [start] /to [end]!'");
         }
         return commandArr[2].trim();
+    }
+
+    public static Task parseTask(String line) {
+        String[] parts = line.split(" \\| ");
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        String description = parts[2];
+
+        switch (type) {
+            case "T":
+                return new Todo(description, isDone);
+            case "D":
+                String by = parts[3];
+                return new Deadline(description, isDone, by);
+            case "E":
+                String duration = parts[3];
+                String[] fromTo = duration.split("-");
+                String from = fromTo[0];
+                String to = fromTo[1];
+                return new Event(description, isDone, from, to);
+            default:
+                throw new IllegalArgumentException("Unknown task type: " + type);
+        }
     }
 
     public static LocalDate parseDate(String date) throws DateTimeParseException {

@@ -1,5 +1,6 @@
 package khat.storage;
 
+import khat.Parser;
 import khat.task.Task;
 import khat.task.TaskList;
 
@@ -33,7 +34,7 @@ public class Storage {
         try (Scanner scanner = new Scanner(KhatTasks)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                Task task = Task.parseTask(line);
+                Task task = Parser.parseTask(line);
                 tasks.add(task);
             }
         }
