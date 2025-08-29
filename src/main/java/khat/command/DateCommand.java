@@ -13,10 +13,21 @@ public class DateCommand extends Command {
 
     private String dateString;
 
+    /**
+     * Constructs a date command with given date string.
+     *
+     * @param date Date to filter deadline tasks by.
+     */
     public DateCommand(String date) {
         this.dateString = date;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * Parses date string and filters tasks with deadline on that date.
+     * @throws KhatException If date format is invalid.
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws KhatException {
         try {
