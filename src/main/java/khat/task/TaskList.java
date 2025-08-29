@@ -88,18 +88,15 @@ public class TaskList {
         return t;
     }
 
-    public void getTaskList() {
-        System.out.println("List of tasks:");
-        for (int i = 0; i < this.getSize(); i++) {
-            Task currTask = tasks.get(i);
-            System.out.println(i + 1 + "." + currTask.toString());
-        }
-    }
-
+    /**
+     * Filters all tasks with the specified keyword.
+     *
+     * @param keyword Keyword to filter tasks by.
+     */
     public TaskList getTasksWithKeyword(String keyword) {
         TaskList filteredTasks = new TaskList();
         boolean containsKeyword = false;
-        for (Task t : tasksList) {
+        for (Task t : tasks) {
             String description = t.getDescription();
             containsKeyword = description.contains(keyword);
             if (containsKeyword) {
