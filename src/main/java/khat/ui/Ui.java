@@ -1,6 +1,10 @@
 package khat.ui;
 
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import khat.task.Task;
+import khat.task.TaskList;
 
 public class Ui {
 
@@ -29,6 +33,18 @@ public class Ui {
 
     public void showMessage(String message) {
         System.out.println(message);
+    }
+
+    public void showTasksWithKeyword(TaskList tasks, String keyword) {
+        if (tasks.getSize() > 0) {
+            System.out.printf("Here are the matching tasks in your list with keyword '%s':\n", keyword);
+            for (int i = 0; i < tasks.getSize(); i++) {
+                Task t = tasks.getTask(i);
+                System.out.println(i + 1 + "." + t.toString());
+            }
+        } else {
+            System.out.println("There are no matching tasks!");
+        }
     }
 
 }

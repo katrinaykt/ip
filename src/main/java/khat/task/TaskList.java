@@ -66,4 +66,17 @@ public class TaskList {
             System.out.println(i + 1 + "." + currTask.toString());
         }
     }
+
+    public TaskList getTasksWithKeyword(String keyword) {
+        TaskList filteredTasks = new TaskList();
+        boolean containsKeyword = false;
+        for (Task t : tasksList) {
+            String description = t.getDescription();
+            containsKeyword = description.contains(keyword);
+            if (containsKeyword) {
+                filteredTasks.addTask(t);
+            }
+        }
+        return filteredTasks;
+    }
 }

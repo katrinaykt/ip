@@ -13,7 +13,7 @@ import java.time.format.DateTimeParseException;
 public class Parser {
 
     public enum CommandType {
-        LIST, BYE, MARK, UNMARK, DELETE, DATE, TODO, DEADLINE, EVENT, UNKNOWN
+        LIST, BYE, MARK, UNMARK, DELETE, DATE, Find, TODO, DEADLINE, EVENT, UNKNOWN
     }
 
     public static String getType(String command) {
@@ -31,35 +31,37 @@ public class Parser {
 
     public static CommandType getCommandType(String command) {
         String type = getType(command);
-        switch (type) {
-            case "list": return CommandType.LIST;
-            case "bye": return CommandType.BYE;
-            case "mark": return CommandType.MARK;
-            case "unmark": return CommandType.UNMARK;
-            case "delete": return CommandType.DELETE;
-            case "date": return CommandType.DATE;
-            case "todo": return CommandType.TODO;
-            case "deadline": return CommandType.DEADLINE;
-            case "event": return CommandType.EVENT;
-            default: return CommandType.UNKNOWN;
-        }
+        return switch (type) {
+            case "list" -> CommandType.LIST;
+            case "bye" -> CommandType.BYE;
+            case "mark" -> CommandType.MARK;
+            case "unmark" -> CommandType.UNMARK;
+            case "delete" -> CommandType.DELETE;
+            case "date" -> CommandType.DATE;
+            case "find" -> CommandType.Find;
+            case "todo" -> CommandType.TODO;
+            case "deadline" -> CommandType.DEADLINE;
+            case "event" -> CommandType.EVENT;
+            default -> CommandType.UNKNOWN;
+        };
     }
 
     public static Command parse(String command) throws KhatException {
         CommandType type = getCommandType(command);
         String description = getDescription(command);
-        switch (type) {
-            case LIST: return new ListCommand();
-            case BYE: return new ExitCommand();
-            case MARK: return new MarkCommand(getIndex(command));
-            case UNMARK: return new UnmarkCommand(getIndex(command));
-            case DELETE: return new DeleteCommand(getIndex(command));
-            case DATE: return new DateCommand(description);
-            case TODO: return new AddCommand(description, "todo");
-            case DEADLINE: return new AddCommand(description, "deadline", getDeadline(command));
-            case EVENT: return new AddCommand(description, "event", getFrom(command), getTo(command));
-            default: throw new KhatException("Invalid command!");
-        }
+        return switch (type) {
+            case LIST -> new ListCommand();
+            case BYE -> new ExitCommand();
+            case MARK -> new MarkCommand(getIndex(command));
+            case UNMARK -> new UnmarkCommand(getIndex(command));
+            case DELETE -> new DeleteCommand(getIndex(command));
+            case DATE -> new DateCommand(description);
+            case Find -> new FindCommand(description);
+            case TODO -> new AddCommand(description, "todo");
+            case DEADLINE -> new AddCommand(description, "deadline", getDeadline(command));
+            case EVENT -> new AddCommand(description, "event", getFrom(command), getTo(command));
+            default -> throw new KhatException("Invalid command!");
+        };
     }
 
     public static int getIndex(String command) {
@@ -67,7 +69,7 @@ public class Parser {
     }
 
     public static String getDeadline(String command) {
-        String descriptionArr[] = command.split("/by"); // [0] -> type, [1] -> by
+        String[] descriptionArr = command.split("/by"); // [0] -> type, [1] -> by
         if (descriptionArr.length < 2) {
             throw new DeadlineTaskException("Add a deadline task in the format 'deadline [task] /by [deadline]!'");
         }
@@ -75,7 +77,7 @@ public class Parser {
     }
 
     public static String getFrom(String command) {
-        String commandArr[] = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
+        String[] commandArr = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
         if (commandArr.length < 3) {
             throw new EventTaskException("Add an event task in the format 'event [task] /from [start] /to [end]!'");
         }
@@ -83,7 +85,7 @@ public class Parser {
     }
 
     public static String getTo(String command) {
-        String commandArr[] = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
+        String[] commandArr = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
         if (commandArr.length < 3) {
             throw new EventTaskException("Add an event task in the format 'event [task] /from [start] /to [end]!'");
         }
