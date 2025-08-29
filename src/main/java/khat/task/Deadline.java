@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/** Represents a Deadline task */
 public class Deadline extends Task {
 
     protected LocalDate date;
@@ -14,7 +15,16 @@ public class Deadline extends Task {
     private boolean hasTime;
     protected String by;
 
-    public Deadline(String description, boolean isDone, String by) {
+    /**
+     * Constructs a Deadline task with the given description, completion status
+     * and deadline date/time. Accepts deadline in the "dd-MM-yyyy HHmm" or "dd-MM-yyyy" format.
+     *
+     * @param description Description of task.
+     * @param isDone True if task is completed, false otherwise.
+     * @param by Deadline date/time string.
+     * @throws DeadlineTaskException If the date/time format is invalid.
+     */
+    public Deadline(String description, boolean isDone, String by) throws DeadlineTaskException{
         super(description, isDone);
         try {
             this.dateTime = LocalDateTime.parse(by, DateTimeFormatter.ofPattern("dd-MM-yyyy HHmm"));
@@ -31,10 +41,20 @@ public class Deadline extends Task {
         }
     }
 
+    /**
+     * Returns true if the deadline includes a time, false if only date.
+     *
+     * @return True if deadline has time, false otherwise.
+     */
     public boolean hasTime() {
         return this.hasTime;
     }
 
+    /**
+     * Returns the formatted deadline string for display.
+     *
+     * @return Formatted deadline string.
+     */
     private String deadlineToString() {
         if (hasTime) {
             return this.dateTime.format(DateTimeFormatter.ofPattern("dd MMM yy hhmma"));
@@ -43,6 +63,7 @@ public class Deadline extends Task {
         }
     }
 
+    @Override
     public String toSaveString() {
         return "D | " + (this.isDone? "1" : "0") + " | " + this.getDescription() + " | " + this.by;
     }

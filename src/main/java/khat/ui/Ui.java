@@ -1,5 +1,8 @@
 package khat.ui;
 
+import khat.task.Task;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ui {
@@ -29,6 +32,14 @@ public class Ui {
 
     public void showMessage(String message) {
         System.out.println(message);
+    }
+
+    public void showTasks(ArrayList<Task> tasks) {
+        System.out.println("List of tasks:");
+        for (int i = 0; i < tasks.size(); i++) {
+            Task currTask = tasks.get(i);
+            System.out.println(i + 1 + "." + currTask.toString());
+        }
     }
 
 }
