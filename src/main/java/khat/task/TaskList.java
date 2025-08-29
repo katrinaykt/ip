@@ -68,9 +68,8 @@ public class TaskList {
      *
      * @param date Date to filter deadlines by.
      */
-    public void printTasksOnDate(LocalDate date) {
-        int count = 0;
-        System.out.println("Deadlines on " + date + ":");
+    public TaskList getTasksOnDate(LocalDate date) {
+        TaskList t = new TaskList();
         for (int i = 0; i < tasks.size(); i++) {
             Task currTask = tasks.get(i);
             boolean match = false;
@@ -83,13 +82,10 @@ public class TaskList {
                 }
             }
             if (match) {
-                System.out.println(count + 1 + "." + currTask.toString());
-                count++;
+                t.addTask(currTask);
             }
         }
-        if (count == 0) {
-            System.out.println("No deadlines on " + date);
-        }
+        return t;
     }
 
 }

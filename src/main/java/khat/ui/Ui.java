@@ -1,7 +1,9 @@
 package khat.ui;
 
 import khat.task.Task;
+import khat.task.TaskList;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -34,11 +36,25 @@ public class Ui {
         System.out.println(message);
     }
 
-    public void showTasks(ArrayList<Task> tasks) {
+    public void showTasks(TaskList tasks) {
+        ArrayList<Task> taskArr = tasks.getAllTasks();
         System.out.println("List of tasks:");
-        for (int i = 0; i < tasks.size(); i++) {
-            Task currTask = tasks.get(i);
+        for (int i = 0; i < taskArr.size(); i++) {
+            Task currTask = taskArr.get(i);
             System.out.println(i + 1 + "." + currTask.toString());
+        }
+    }
+
+    public void showTasksOnDate(TaskList tasks, LocalDate date) {
+        ArrayList<Task> taskArr = tasks.getAllTasks();
+        if (taskArr.size() > 0) {
+            System.out.println("Deadlines on " + date + ":");
+            for (int i = 0; i < taskArr.size(); i++) {
+                Task currTask = taskArr.get(i);
+                System.out.println(i + 1 + "." + currTask.toString());
+            }
+        } else {
+            System.out.println("No deadlines on " + date);
         }
     }
 

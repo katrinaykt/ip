@@ -21,7 +21,8 @@ public class DateCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) throws KhatException {
         try {
             LocalDate date = Parser.parseDate(dateString);
-            tasks.printTasksOnDate(date);
+            TaskList filteredTasks = tasks.getTasksOnDate(date);
+            ui.showTasksOnDate(filteredTasks, date);
         } catch (DateTimeParseException e) {
             throw new KhatException("Invalid command! Please use dates in the format dd-MM-yyyy!");
         }
