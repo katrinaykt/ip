@@ -38,8 +38,7 @@ public class TaskList {
     public void printTasksOnDate(LocalDate date) {
         int count = 0;
         System.out.println("Deadlines on " + date + ":");
-        for (int i = 0; i < tasksList.size(); i++) {
-            Task currTask = tasksList.get(i);
+        for (Task currTask : tasksList) {
             boolean match = false;
             if (currTask instanceof Deadline) {
                 Deadline d = (Deadline) currTask;

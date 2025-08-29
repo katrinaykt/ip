@@ -19,7 +19,7 @@ public class MarkCommand extends Command {
         try {
             Task curr = tasks.getTask(index);
             curr.markAsDone();
-            ui.showMessage("Nice! I've marked this task as done:\n" + curr.toString());
+            ui.showMessage("Nice! I've marked this task as done:\n" + curr);
         } catch (IndexOutOfBoundsException e) {
             ui.showMessage("This task doesn't exist!");
         }

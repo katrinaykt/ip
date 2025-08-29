@@ -1,12 +1,12 @@
 package khat;
 
+import java.io.FileNotFoundException;
+
 import khat.command.Command;
 import khat.exception.KhatException;
 import khat.storage.Storage;
 import khat.task.TaskList;
 import khat.ui.Ui;
-
-import java.io.FileNotFoundException;
 
 public class Khat {
 

@@ -1,11 +1,11 @@
 package khat.task;
 
-import khat.exception.DeadlineTaskException;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import khat.exception.DeadlineTaskException;
 
 public class Deadline extends Task {
 

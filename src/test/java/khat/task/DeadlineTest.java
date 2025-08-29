@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DeadlineTest {
 
     @Test
-    public void constructor_setsFieldsCorrectly() {
+    public void constructor_validDeadline_setsFieldsCorrectly() {
         Deadline deadline = new Deadline("essay", false, "29-08-2025 2359");
         assertEquals("essay", deadline.description);
         assertEquals(false, deadline.isDone);
@@ -29,13 +29,13 @@ public class DeadlineTest {
     }
 
     @Test
-    public void toSaveString_correctFormat() {
+    public void toSaveString_validDeadline_returnsCorrectFormat() {
         Deadline deadline = new Deadline("essay", false, "29-08-2025 2359");
         assertEquals("D | 0 | essay | 29-08-2025 2359", deadline.toSaveString());
     }
 
     @Test
-    public void toString_correctFormat() {
+    public void toString_doneDeadline_returnsCorrectFormat() {
         Deadline deadline = new Deadline("essay", true, "29-08-2025 2359");
         assertEquals("[D][X] essay (by: 29 Aug 25 1159pm)", deadline.toString());
     }

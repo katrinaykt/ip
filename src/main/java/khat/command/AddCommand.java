@@ -2,7 +2,11 @@ package khat.command;
 
 import khat.exception.KhatException;
 import khat.storage.Storage;
-import khat.task.*;
+import khat.task.Deadline;
+import khat.task.Event;
+import khat.task.Task;
+import khat.task.TaskList;
+import khat.task.Todo;
 import khat.ui.Ui;
 
 public class AddCommand extends Command {

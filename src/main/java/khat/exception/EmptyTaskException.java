@@ -6,8 +6,4 @@ public class EmptyTaskException extends KhatException {
         super(message);
     }
 
-//    @Override
-//    public String toString() {
-//        return "EmptyTask: " + getMessage();
-//    }
 }

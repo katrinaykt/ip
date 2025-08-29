@@ -6,8 +6,4 @@ public class EventTaskException extends KhatException {
         super(e);
     }
 
-    @Override
-    public String toString() {
-        return "EventTaskException:" + getMessage();
-    }
 }

@@ -6,8 +6,4 @@ public class DeadlineTaskException extends KhatException {
         super(e);
     }
 
-    @Override
-    public String toString() {
-        return "DeadlineTaskException: " + getMessage();
-    }
 }
