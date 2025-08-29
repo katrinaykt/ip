@@ -5,21 +5,39 @@ import khat.exception.DeadlineTaskException;
 import khat.exception.EmptyTaskException;
 import khat.exception.EventTaskException;
 import khat.exception.KhatException;
+import khat.task.Deadline;
+import khat.task.Event;
+import khat.task.Task;
+import khat.task.Todo;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/** Handles parsing of user commands and task data. */
 public class Parser {
 
     public enum CommandType {
-        LIST, BYE, MARK, UNMARK, DELETE, DATE, TODO, DEADLINE, EVENT, UNKNOWN
+        List, Bye, Mark, Unmark, Delete, Date, Todo, Deadline, Event, Unknown
     }
 
+    /**
+     * Returns the type of command from the user input.
+     *
+     * @param command The full user command string.
+     * @return The command type as a string.
+     */
     public static String getType(String command) {
         return command.split(" ")[0];
     }
 
+    /**
+     * Extracts and returns the description from the user command.
+     *
+     * @param command The full user command string.
+     * @return The task description.
+     * @throws EmptyTaskException If description is empty.
+     */
     public static String getDescription(String command) {
         String description = command.split("/")[0]
                 .substring(command.split("/")[0].indexOf(' ') + 1).trim();
@@ -29,43 +47,69 @@ public class Parser {
         return description;
     }
 
+    /**
+     * Returns the CommandType enum for the given command string.
+     *
+     * @param command The full user command string.
+     * @return The CommandType.
+     */
     public static CommandType getCommandType(String command) {
         String type = getType(command);
         switch (type) {
-            case "list": return CommandType.LIST;
-            case "bye": return CommandType.BYE;
-            case "mark": return CommandType.MARK;
-            case "unmark": return CommandType.UNMARK;
-            case "delete": return CommandType.DELETE;
-            case "date": return CommandType.DATE;
-            case "todo": return CommandType.TODO;
-            case "deadline": return CommandType.DEADLINE;
-            case "event": return CommandType.EVENT;
-            default: return CommandType.UNKNOWN;
+            case "list": return CommandType.List;
+            case "bye": return CommandType.Bye;
+            case "mark": return CommandType.Mark;
+            case "unmark": return CommandType.Unmark;
+            case "delete": return CommandType.Delete;
+            case "date": return CommandType.Date;
+            case "todo": return CommandType.Todo;
+            case "deadline": return CommandType.Deadline;
+            case "event": return CommandType.Event;
+            default: return CommandType.Unknown;
         }
     }
 
+    /**
+     * Parses the user command and returns the corresponding Command object.
+     *
+     * @param command The full user command string.
+     * @return The Command object.
+     * @throws KhatException If the command is invalid or arguments are missing.
+     */
     public static Command parse(String command) throws KhatException {
         CommandType type = getCommandType(command);
         String description = getDescription(command);
         switch (type) {
-            case LIST: return new ListCommand();
-            case BYE: return new ExitCommand();
-            case MARK: return new MarkCommand(getIndex(command));
-            case UNMARK: return new UnmarkCommand(getIndex(command));
-            case DELETE: return new DeleteCommand(getIndex(command));
-            case DATE: return new DateCommand(description);
-            case TODO: return new AddCommand(description, "todo");
-            case DEADLINE: return new AddCommand(description, "deadline", getDeadline(command));
-            case EVENT: return new AddCommand(description, "event", getFrom(command), getTo(command));
+            case List: return new ListCommand();
+            case Bye: return new ExitCommand();
+            case Mark: return new MarkCommand(getIndex(command));
+            case Unmark: return new UnmarkCommand(getIndex(command));
+            case Delete: return new DeleteCommand(getIndex(command));
+            case Date: return new DateCommand(description);
+            case Todo: return new AddCommand(description, "todo");
+            case Deadline: return new AddCommand(description, "deadline", getDeadline(command));
+            case Event: return new AddCommand(description, "event", getFrom(command), getTo(command));
             default: throw new KhatException("Invalid command!");
         }
     }
 
+    /**
+     * Returns the index in the array list for mark, unmark, or delete commands.
+     *
+     * @param command The full user command string.
+     * @return The zero-based index of the task.
+     */
     public static int getIndex(String command) {
         return Integer.parseInt(command.split(" ")[1]) - 1;
     }
 
+    /**
+     * Extracts the deadline string from a deadline command.
+     *
+     * @param command The full user command string.
+     * @return The deadline string.
+     * @throws DeadlineTaskException If the deadline is missing.
+     */
     public static String getDeadline(String command) {
         String descriptionArr[] = command.split("/by"); // [0] -> type, [1] -> by
         if (descriptionArr.length < 2) {
@@ -74,6 +118,13 @@ public class Parser {
         return descriptionArr[1].trim();
     }
 
+    /**
+     * Extracts the start date/time from an event command.
+     *
+     * @param command The full user command string.
+     * @return The event start date/time string.
+     * @throws EventTaskException If the event format is invalid.
+     */
     public static String getFrom(String command) {
         String commandArr[] = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
         if (commandArr.length < 3) {
@@ -82,6 +133,13 @@ public class Parser {
         return commandArr[1].trim();
     }
 
+    /**
+     * Extracts the end date/time from an event command.
+     *
+     * @param command The full user command string.
+     * @return The event end date/time string.
+     * @throws EventTaskException If the event format is invalid.
+     */
     public static String getTo(String command) {
         String commandArr[] = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
         if (commandArr.length < 3) {
@@ -90,6 +148,43 @@ public class Parser {
         return commandArr[2].trim();
     }
 
+    /**
+     * Parses a line from the save file and returns the corresponding Task object.
+     *
+     * @param line The line from the save file.
+     * @return The parsed Task object.
+     * @throws IllegalArgumentException If the task type is unknown or the line is malformed.
+     */
+    public static Task parseTask(String line) {
+        String[] parts = line.split(" \\| ");
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        String description = parts[2];
+
+        switch (type) {
+            case "T":
+                return new Todo(description, isDone);
+            case "D":
+                String by = parts[3];
+                return new Deadline(description, isDone, by);
+            case "E":
+                String duration = parts[3];
+                String[] fromTo = duration.split("-");
+                String from = fromTo[0];
+                String to = fromTo[1];
+                return new Event(description, isDone, from, to);
+            default:
+                throw new IllegalArgumentException("Unknown task type: " + type);
+        }
+    }
+
+    /**
+     * Parses a date string in the format dd-MM-yyyy and returns a LocalDate object.
+     *
+     * @param date The date string to parse.
+     * @return The parsed LocalDate object.
+     * @throws DateTimeParseException If the date format is invalid.
+     */
     public static LocalDate parseDate(String date) throws DateTimeParseException {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }

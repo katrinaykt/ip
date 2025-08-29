@@ -3,43 +3,75 @@ package khat.task;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/** Represents a list of tasks. */
 public class TaskList {
 
-    protected ArrayList<Task> tasksList;
+    protected ArrayList<Task> tasks;
 
+    /** Constructs an empty TaskList */
     public TaskList() {
-        tasksList = new ArrayList<>();
+        tasks = new ArrayList<>();
     }
 
-    public TaskList(ArrayList<Task> tasksList) {
-        this.tasksList = tasksList;
+    /**
+     * Constructs a TaskList with given list of tasks.
+     *
+     * @param tasks Initial list of tasks.
+     */
+    public TaskList(ArrayList<Task> tasks) {
+        this.tasks = tasks;
     }
 
+    /**
+     * Returns Task at the given index.
+     *
+     * @param index Index of task to retrieve.
+     * @return Task at the given index.
+     */
     public Task getTask(int index) {
-        return tasksList.get(index);
+        return tasks.get(index);
     }
 
     public ArrayList<Task> getAllTasks() {
-        return tasksList;
+        return tasks;
     }
 
+    /**
+     * Returns the number of tasks in the TaskList.
+     *
+     * @return Size of task list.
+     */
     public int getSize() {
-        return tasksList.size();
+        return tasks.size();
     }
 
+    /**
+     * Adds a task to the task list.
+     *
+     * @param t Task to be added.
+     */
     public void addTask(Task t) {
-        tasksList.add(t);
+        tasks.add(t);
     }
 
+    /**
+     * Removes a task from the task list at the specified index.
+     *
+     * @param index Index of task to be removed.
+     */
     public void removeTask(int index) {
-        tasksList.remove(index);
+        tasks.remove(index);
     }
 
-    public void printTasksOnDate(LocalDate date) {
-        int count = 0;
-        System.out.println("Deadlines on " + date + ":");
-        for (int i = 0; i < tasksList.size(); i++) {
-            Task currTask = tasksList.get(i);
+    /**
+     * Prints all deadline tasks on a specified deadline date.
+     *
+     * @param date Date to filter deadlines by.
+     */
+    public TaskList getTasksOnDate(LocalDate date) {
+        TaskList t = new TaskList();
+        for (int i = 0; i < tasks.size(); i++) {
+            Task currTask = tasks.get(i);
             boolean match = false;
             if (currTask instanceof Deadline) {
                 Deadline d = (Deadline) currTask;
@@ -50,20 +82,10 @@ public class TaskList {
                 }
             }
             if (match) {
-                System.out.println(count + 1 + "." + currTask.toString());
-                count++;
+                t.addTask(currTask);
             }
         }
-        if (count == 0) {
-            System.out.println("No deadlines on " + date);
-        }
+        return t;
     }
 
-    public void getTaskList() {
-        System.out.println("List of tasks:");
-        for (int i = 0; i < this.getSize(); i++) {
-            Task currTask = tasksList.get(i);
-            System.out.println(i + 1 + "." + currTask.toString());
-        }
-    }
 }

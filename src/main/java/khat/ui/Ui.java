@@ -1,5 +1,10 @@
 package khat.ui;
 
+import khat.task.Task;
+import khat.task.TaskList;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ui {
@@ -7,28 +12,79 @@ public class Ui {
     private Scanner scanner = new Scanner(System.in);
     private static final String DIVIDER = "___________________________________";
 
+    /**
+     * Shows welcome message.
+     */
     public void showWelcome() {
         System.out.println("Hello! I'm Khat.\nStart keeping track of all your tasks by sending a short command!");
     }
 
+    /**
+     * Shows exit message.
+     */
     public void showExit() {
         System.out.println("Bye. Hope to see you again soon!");
     }
 
+    /**
+     * Reads command from user input.
+     *
+     * @return Command entered by user.
+     */
     public String readCommand() {
         return scanner.nextLine();
     }
 
+    /** Shows divider line. */
     public void showDivider() {
         System.out.println(DIVIDER);
     }
 
+    /** Shows an error message when loading previous tasks fails. */
     public void showLoadingError() {
         System.out.println("Error loading previous tasks! Creating a new task list.");
     }
 
+    /**
+     * Shows a custom message to the user.
+     *
+     * @param message The message to display.
+     */
     public void showMessage(String message) {
         System.out.println(message);
+    }
+
+    /**
+     * Shows the list of all tasks.
+     *
+     * @param tasks The task list containing all tasks.
+     */
+    public void showTasks(TaskList tasks) {
+        ArrayList<Task> taskArr = tasks.getAllTasks();
+        System.out.println("List of tasks:");
+        for (int i = 0; i < taskArr.size(); i++) {
+            Task currTask = taskArr.get(i);
+            System.out.println(i + 1 + "." + currTask.toString());
+        }
+    }
+
+    /**
+     * Shows the tasks occurring on a specific date.
+     *
+     * @param tasks The task list containing filtered tasks.
+     * @param date The date to display tasks for.
+     */
+    public void showTasksOnDate(TaskList tasks, LocalDate date) {
+        ArrayList<Task> taskArr = tasks.getAllTasks();
+        if (taskArr.size() > 0) {
+            System.out.println("Deadlines on " + date + ":");
+            for (int i = 0; i < taskArr.size(); i++) {
+                Task currTask = taskArr.get(i);
+                System.out.println(i + 1 + "." + currTask.toString());
+            }
+        } else {
+            System.out.println("No deadlines on " + date);
+        }
     }
 
 }
