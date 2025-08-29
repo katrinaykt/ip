@@ -9,6 +9,7 @@ import khat.command.Command;
 import khat.command.DateCommand;
 import khat.command.DeleteCommand;
 import khat.command.ExitCommand;
+import khat.command.FindCommand;
 import khat.command.ListCommand;
 import khat.command.MarkCommand;
 import khat.command.UnmarkCommand;
@@ -25,7 +26,7 @@ import khat.task.Todo;
 public class Parser {
 
     public enum CommandType {
-        List, Bye, Mark, Unmark, Delete, Date, Todo, Deadline, Event, Unknown
+        List, Bye, Mark, Unmark, Delete, Date, Find, Todo, Deadline, Event, Unknown
     }
 
     /**
@@ -62,18 +63,19 @@ public class Parser {
      */
     public static CommandType getCommandType(String command) {
         String type = getType(command);
-        switch (type) {
-            case "list": return CommandType.List;
-            case "bye": return CommandType.Bye;
-            case "mark": return CommandType.Mark;
-            case "unmark": return CommandType.Unmark;
-            case "delete": return CommandType.Delete;
-            case "date": return CommandType.Date;
-            case "todo": return CommandType.Todo;
-            case "deadline": return CommandType.Deadline;
-            case "event": return CommandType.Event;
-            default: return CommandType.Unknown;
-        }
+        return switch (type) {
+            case "list" -> CommandType.List;
+            case "bye" -> CommandType.Bye;
+            case "mark" -> CommandType.Mark;
+            case "unmark" -> CommandType.Unmark;
+            case "delete" -> CommandType.Delete;
+            case "date" -> CommandType.Date;
+            case "find" -> CommandType.Find;
+            case "todo" -> CommandType.Todo;
+            case "deadline" -> CommandType.Deadline;
+            case "event" -> CommandType.Event;
+            default -> CommandType.Unknown;
+        };
     }
 
     /**
@@ -86,18 +88,19 @@ public class Parser {
     public static Command parse(String command) throws KhatException {
         CommandType type = getCommandType(command);
         String description = getDescription(command);
-        switch (type) {
-            case List: return new ListCommand();
-            case Bye: return new ExitCommand();
-            case Mark: return new MarkCommand(getIndex(command));
-            case Unmark: return new UnmarkCommand(getIndex(command));
-            case Delete: return new DeleteCommand(getIndex(command));
-            case Date: return new DateCommand(description);
-            case Todo: return new AddCommand(description, "todo");
-            case Deadline: return new AddCommand(description, "deadline", getDeadline(command));
-            case Event: return new AddCommand(description, "event", getFrom(command), getTo(command));
-            default: throw new KhatException("Invalid command!");
-        }
+        return switch (type) {
+            case List -> new ListCommand();
+            case Bye -> new ExitCommand();
+            case Mark -> new MarkCommand(getIndex(command));
+            case Unmark -> new UnmarkCommand(getIndex(command));
+            case Delete -> new DeleteCommand(getIndex(command));
+            case Date -> new DateCommand(description);
+            case Find -> new FindCommand(description);
+            case Todo -> new AddCommand(description, "todo");
+            case Deadline -> new AddCommand(description, "deadline", getDeadline(command));
+            case Event -> new AddCommand(description, "event", getFrom(command), getTo(command));
+            default -> throw new KhatException("Invalid command!");
+        };
     }
 
     /**
@@ -118,7 +121,7 @@ public class Parser {
      * @throws DeadlineTaskException If the deadline is missing.
      */
     public static String getDeadline(String command) {
-        String descriptionArr[] = command.split("/by"); // [0] -> type, [1] -> by
+        String[] descriptionArr = command.split("/by"); // [0] -> type, [1] -> by
         if (descriptionArr.length < 2) {
             throw new DeadlineTaskException("Add a deadline task in the format 'deadline [task] /by [deadline]!'");
         }
@@ -133,7 +136,7 @@ public class Parser {
      * @throws EventTaskException If the event format is invalid.
      */
     public static String getFrom(String command) {
-        String commandArr[] = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
+        String[] commandArr = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
         if (commandArr.length < 3) {
             throw new EventTaskException("Add an event task in the format 'event [task] /from [start] /to [end]!'");
         }
@@ -148,7 +151,7 @@ public class Parser {
      * @throws EventTaskException If the event format is invalid.
      */
     public static String getTo(String command) {
-        String commandArr[] = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
+        String[] commandArr = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
         if (commandArr.length < 3) {
             throw new EventTaskException("Add an event task in the format 'event [task] /from [start] /to [end]!'");
         }
@@ -169,19 +172,19 @@ public class Parser {
         String description = parts[2];
 
         switch (type) {
-            case "T":
-                return new Todo(description, isDone);
-            case "D":
-                String by = parts[3];
-                return new Deadline(description, isDone, by);
-            case "E":
-                String duration = parts[3];
-                String[] fromTo = duration.split("-");
-                String from = fromTo[0];
-                String to = fromTo[1];
-                return new Event(description, isDone, from, to);
-            default:
-                throw new IllegalArgumentException("Unknown task type: " + type);
+        case "T":
+            return new Todo(description, isDone);
+        case "D":
+            String by = parts[3];
+            return new Deadline(description, isDone, by);
+        case "E":
+            String duration = parts[3];
+            String[] fromTo = duration.split("-");
+            String from = fromTo[0];
+            String to = fromTo[1];
+            return new Event(description, isDone, from, to);
+        default:
+            throw new IllegalArgumentException("Unknown task type: " + type);
         }
     }
 

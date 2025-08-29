@@ -1,11 +1,11 @@
 package khat.ui;
 
-import khat.task.Task;
-import khat.task.TaskList;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import khat.task.Task;
+import khat.task.TaskList;
 
 public class Ui {
 
@@ -84,6 +84,24 @@ public class Ui {
             }
         } else {
             System.out.println("No deadlines on " + date);
+        }
+    }
+
+    /**
+     * Shows the tasks in task list with specified keyword.
+     *
+     * @param tasks The task list containing filtered tasks.
+     * @param keyword
+     */
+    public void showTasksWithKeyword(TaskList tasks, String keyword) {
+        if (tasks.getSize() > 0) {
+            System.out.printf("Here are the matching tasks in your list with keyword '%s':\n", keyword);
+            for (int i = 0; i < tasks.getSize(); i++) {
+                Task t = tasks.getTask(i);
+                System.out.println(i + 1 + "." + t.toString());
+            }
+        } else {
+            System.out.println("There are no matching tasks!");
         }
     }
 
