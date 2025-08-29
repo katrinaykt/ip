@@ -64,7 +64,7 @@ public class TaskList {
     }
 
     /**
-     * Prints all deadline tasks on a specified deadline date.
+     * Filters all deadline tasks on a specified deadline date.
      *
      * @param date Date to filter deadlines by.
      */
@@ -88,4 +88,11 @@ public class TaskList {
         return t;
     }
 
+    public void getTaskList() {
+        System.out.println("List of tasks:");
+        for (int i = 0; i < this.getSize(); i++) {
+            Task currTask = tasks.get(i);
+            System.out.println(i + 1 + "." + currTask.toString());
+        }
+    }
 }

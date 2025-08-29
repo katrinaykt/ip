@@ -33,7 +33,7 @@ public class UnmarkCommand extends Command {
         try {
             Task curr = tasks.getTask(index);
             curr.markAsNotDone();
-            ui.showMessage("Ok, I've marked this task as not done yet:\n" + curr.toString());
+            ui.showMessage("Ok, I've marked this task as not done yet:\n" + curr);
         } catch (IndexOutOfBoundsException e) {
             ui.showMessage("This task doesn't exist! Check the index again :(");
         }

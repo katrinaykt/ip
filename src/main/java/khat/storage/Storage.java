@@ -1,15 +1,15 @@
 package khat.storage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import khat.Parser;
 import khat.task.Task;
 import khat.task.TaskList;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Handles loading and saving tasks to the hard disk.
