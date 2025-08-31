@@ -23,7 +23,7 @@ public class Event extends Task {
 
     @Override
     public String toSaveString() {
-        return "E | " + (this.isDone? "1" : "0") + " | " + this.getDescription() + " | " + this.from + "-" + this.to;
+        return "E | " + (this.isDone ? "1" : "0") + " | " + this.getDescription() + " | " + this.from + "-" + this.to;
     }
 
     @Override

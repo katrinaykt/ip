@@ -16,7 +16,7 @@ import khat.task.TaskList;
  */
 public class Storage {
 
-    private final File KhatTasks;
+    private final File khatTasks;
 
     /**
      * Constructs a Storage object with the given file path.
@@ -25,8 +25,8 @@ public class Storage {
      * @param path The file path for storing tasks.
      */
     public Storage(String path) {
-        this.KhatTasks = new File(path);
-        File parentDir = KhatTasks.getParentFile();
+        this.khatTasks = new File(path);
+        File parentDir = khatTasks.getParentFile();
         if (!parentDir.exists()) {
             boolean created = parentDir.mkdirs();
             if (!created) {
@@ -43,10 +43,10 @@ public class Storage {
      */
     public ArrayList<Task> loadTasks() throws FileNotFoundException {
         ArrayList<Task> tasks = new ArrayList<>();
-        if (!KhatTasks.exists()) {
+        if (!khatTasks.exists()) {
             return tasks;
         }
-        try (Scanner scanner = new Scanner(KhatTasks)) {
+        try (Scanner scanner = new Scanner(khatTasks)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 Task task = Parser.parseTask(line);
@@ -62,7 +62,7 @@ public class Storage {
      * @param tasks The task list to save.
      */
     public void saveTasks(TaskList tasks) {
-        try (FileWriter writer = new FileWriter(KhatTasks)) {
+        try (FileWriter writer = new FileWriter(khatTasks)) {
             for (Task task : tasks.getAllTasks()) {
                 writer.write(task.toSaveString() + System.lineSeparator());
             }

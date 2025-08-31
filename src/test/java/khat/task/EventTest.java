@@ -1,8 +1,9 @@
 package khat.task;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import org.junit.jupiter.api.Test;
 
 public class EventTest {
 
@@ -10,7 +11,7 @@ public class EventTest {
     public void constructor_validInputs_setsFieldsCorrectly() {
         Event event = new Event("meeting", false, "11am", "12pm");
         assertEquals("meeting", event.description);
-        assertEquals(false, event.isDone);
+        assertFalse(event.isDone);
         assertEquals("11am", event.from);
         assertEquals("12pm", event.to);
     }

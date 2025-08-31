@@ -5,9 +5,7 @@ import khat.storage.Storage;
 import khat.task.TaskList;
 import khat.ui.Ui;
 
-/**
- * Represents a command to find tasks with a matching keyword.
- */
+/** Represents a command to find tasks with a matching keyword. */
 public class FindCommand extends Command {
 
     private String keyword;
@@ -15,7 +13,7 @@ public class FindCommand extends Command {
     /**
      * Constructs a FindCommand with given keyword.
      *
-     * @param keyword
+     * @param keyword Keyword to filter tasks by.
      */
     public FindCommand(String keyword) {
         this.keyword = keyword;

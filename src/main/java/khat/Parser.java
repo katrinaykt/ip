@@ -25,6 +25,7 @@ import khat.task.Todo;
 /** Handles parsing of user commands and task data. */
 public class Parser {
 
+    /** Represents the types of commands that can be used in the chatbot. */
     public enum CommandType {
         LIST, BYE, MARK, UNMARK, DELETE, DATE, FIND, TODO, DEADLINE, EVENT, UNKNOWN
     }
@@ -61,6 +62,7 @@ public class Parser {
      * @param command The full user command string.
      * @return The CommandType.
      */
+    //CHECKSTYLE.OFF: Indentation
     public static CommandType getCommandType(String command) {
         String type = getType(command);
         return switch (type) {
@@ -102,6 +104,7 @@ public class Parser {
             default -> throw new KhatException("Invalid command!");
         };
     }
+    //CHECKSTYLE.ON: Indentation
 
     /**
      * Returns the index in the array list for mark, unmark, or delete commands.

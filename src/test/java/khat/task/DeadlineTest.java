@@ -1,11 +1,14 @@
 package khat.task;
 
-import khat.exception.DeadlineTaskException;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import khat.exception.DeadlineTaskException;
 
 public class DeadlineTest {
 
@@ -13,9 +16,9 @@ public class DeadlineTest {
     public void constructor_validDeadline_setsFieldsCorrectly() {
         Deadline deadline = new Deadline("essay", false, "29-08-2025 2359");
         assertEquals("essay", deadline.description);
-        assertEquals(false, deadline.isDone);
+        assertFalse(deadline.isDone);
         assertEquals("29-08-2025 2359", deadline.by);
-        assertEquals(true, deadline.hasTime());
+        assertTrue(deadline.hasTime());
         assertEquals(LocalDateTime.of(2025, 8, 29, 23, 59), deadline.dateTime);
     }
 

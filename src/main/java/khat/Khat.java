@@ -8,12 +8,22 @@ import khat.storage.Storage;
 import khat.task.TaskList;
 import khat.ui.Ui;
 
+/**
+ * This is the main class for the Khat chatbot.
+ */
 public class Khat {
 
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Constructs a Khat instance with specified file path to store tasks to the hard disk.
+     * Initializes the storage, user interface, and loads tasks from storage.
+     * If loading tasks fails, initializes an empty task list.
+     *
+     * @param filePath Path to the file for tasks.
+     */
     public Khat(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -24,7 +34,11 @@ public class Khat {
             tasks = new TaskList();
         }
     }
-    
+
+    /**
+     * Runs the main application loop, where it reads and executes user commands
+     * until the exit command is received.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
