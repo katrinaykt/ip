@@ -1,7 +1,7 @@
 package khat.exception;
 
 /**
- * Represents a exception for errors that occur in the Khat chatbot.
+ * Represents an exception for errors that occur in the Khat chatbot.
  */
 public class KhatException extends RuntimeException {
 

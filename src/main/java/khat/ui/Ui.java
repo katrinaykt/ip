@@ -7,10 +7,14 @@ import java.util.Scanner;
 import khat.task.Task;
 import khat.task.TaskList;
 
+/**
+ * Handles all user interface interactions.
+ * It displays messages, read user commands, and shows information about tasks.
+ */
 public class Ui {
 
-    private Scanner scanner = new Scanner(System.in);
     private static final String DIVIDER = "___________________________________";
+    private Scanner scanner = new Scanner(System.in);
 
     /**
      * Shows welcome message.
@@ -76,7 +80,7 @@ public class Ui {
      */
     public void showTasksOnDate(TaskList tasks, LocalDate date) {
         ArrayList<Task> taskArr = tasks.getAllTasks();
-        if (taskArr.size() > 0) {
+        if (!taskArr.isEmpty()) {
             System.out.println("Deadlines on " + date + ":");
             for (int i = 0; i < taskArr.size(); i++) {
                 Task currTask = taskArr.get(i);
@@ -91,7 +95,7 @@ public class Ui {
      * Shows the tasks in task list with specified keyword.
      *
      * @param tasks The task list containing filtered tasks.
-     * @param keyword
+     * @param keyword Keyword to filter tasks by.
      */
     public void showTasksWithKeyword(TaskList tasks, String keyword) {
         if (tasks.getSize() > 0) {

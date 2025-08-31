@@ -75,12 +75,14 @@ public class AddCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws KhatException {
+        //CHECKSTYLE.OFF: Indentation
         Task t = switch (type) {
             case "todo" -> new Todo(description, false);
             case "deadline" -> new Deadline(description, false, by);
             case "event" -> new Event(description, false, from, to);
             default -> throw new KhatException("Invalid task!");
         };
+        //CHECKSTYLE.ON: Indentation
         tasks.addTask(t);
         ui.showMessage("Got it. I've added this task:\n" + t);
         ui.showMessage("Now you have " + tasks.getSize() + " tasks in the list.");

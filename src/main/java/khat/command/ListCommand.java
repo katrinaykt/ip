@@ -5,8 +5,6 @@ import khat.storage.Storage;
 import khat.task.TaskList;
 import khat.ui.Ui;
 
-import java.util.ArrayList;
-
 /**
  * Represents a command to list all tasks in the task list.
  */

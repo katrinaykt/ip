@@ -9,6 +9,7 @@ import khat.storage.Storage;
 import khat.task.TaskList;
 import khat.ui.Ui;
 
+/** Represents a command to filter deadline tasks on a specified date. */
 public class DateCommand extends Command {
 
     private String dateString;

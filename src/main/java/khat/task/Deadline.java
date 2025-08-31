@@ -12,8 +12,8 @@ public class Deadline extends Task {
 
     protected LocalDate date;
     protected LocalDateTime dateTime;
-    private boolean hasTime;
     protected String by;
+    private boolean hasTime;
 
     /**
      * Constructs a Deadline task with the given description, completion status
@@ -24,7 +24,7 @@ public class Deadline extends Task {
      * @param by Deadline date/time string.
      * @throws DeadlineTaskException If the date/time format is invalid.
      */
-    public Deadline(String description, boolean isDone, String by) throws DeadlineTaskException{
+    public Deadline(String description, boolean isDone, String by) throws DeadlineTaskException {
         super(description, isDone);
         try {
             this.dateTime = LocalDateTime.parse(by, DateTimeFormatter.ofPattern("dd-MM-yyyy HHmm"));
@@ -65,7 +65,7 @@ public class Deadline extends Task {
 
     @Override
     public String toSaveString() {
-        return "D | " + (this.isDone? "1" : "0") + " | " + this.getDescription() + " | " + this.by;
+        return "D | " + (this.isDone ? "1" : "0") + " | " + this.getDescription() + " | " + this.by;
     }
 
     @Override

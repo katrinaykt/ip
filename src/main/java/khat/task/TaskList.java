@@ -70,8 +70,7 @@ public class TaskList {
      */
     public TaskList getTasksOnDate(LocalDate date) {
         TaskList t = new TaskList();
-        for (int i = 0; i < tasks.size(); i++) {
-            Task currTask = tasks.get(i);
+        for (Task currTask : tasks) {
             boolean match = false;
             if (currTask instanceof Deadline) {
                 Deadline d = (Deadline) currTask;
@@ -95,7 +94,7 @@ public class TaskList {
      */
     public TaskList getTasksWithKeyword(String keyword) {
         TaskList filteredTasks = new TaskList();
-        boolean containsKeyword = false;
+        boolean containsKeyword;
         for (Task t : tasks) {
             String description = t.getDescription();
             containsKeyword = description.contains(keyword);
