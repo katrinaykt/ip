@@ -1,8 +1,9 @@
 package khat.task;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import org.junit.jupiter.api.Test;
 
 public class TodoTest {
 
@@ -10,7 +11,7 @@ public class TodoTest {
     public void constructor_givenDescriptionAndIsDone_setsFieldsCorrectly() {
         Todo todo = new Todo("Read book", false);
         assertEquals("Read book", todo.description);
-        assertEquals(false, todo.isDone);
+        assertFalse(todo.isDone);
     }
 
     @Test
