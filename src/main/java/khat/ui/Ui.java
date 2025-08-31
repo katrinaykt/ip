@@ -23,7 +23,7 @@ public class Ui {
      * Shows exit message.
      */
     public void showExit() {
-        System.out.println("Bye. Hope to see you again soon!");
+        System.out.println("BYE. Hope to see you again soon!");
     }
 
     /**

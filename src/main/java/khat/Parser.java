@@ -26,7 +26,7 @@ import khat.task.Todo;
 public class Parser {
 
     public enum CommandType {
-        List, Bye, Mark, Unmark, Delete, Date, Find, Todo, Deadline, Event, Unknown
+        LIST, BYE, MARK, UNMARK, DELETE, DATE, FIND, TODO, DEADLINE, EVENT, UNKNOWN
     }
 
     /**
@@ -64,17 +64,17 @@ public class Parser {
     public static CommandType getCommandType(String command) {
         String type = getType(command);
         return switch (type) {
-            case "list" -> CommandType.List;
-            case "bye" -> CommandType.Bye;
-            case "mark" -> CommandType.Mark;
-            case "unmark" -> CommandType.Unmark;
-            case "delete" -> CommandType.Delete;
-            case "date" -> CommandType.Date;
-            case "find" -> CommandType.Find;
-            case "todo" -> CommandType.Todo;
-            case "deadline" -> CommandType.Deadline;
-            case "event" -> CommandType.Event;
-            default -> CommandType.Unknown;
+            case "list" -> CommandType.LIST;
+            case "bye" -> CommandType.BYE;
+            case "mark" -> CommandType.MARK;
+            case "unmark" -> CommandType.UNMARK;
+            case "delete" -> CommandType.DELETE;
+            case "date" -> CommandType.DATE;
+            case "find" -> CommandType.FIND;
+            case "todo" -> CommandType.TODO;
+            case "deadline" -> CommandType.DEADLINE;
+            case "event" -> CommandType.EVENT;
+            default -> CommandType.UNKNOWN;
         };
     }
 
@@ -89,16 +89,16 @@ public class Parser {
         CommandType type = getCommandType(command);
         String description = getDescription(command);
         return switch (type) {
-            case List -> new ListCommand();
-            case Bye -> new ExitCommand();
-            case Mark -> new MarkCommand(getIndex(command));
-            case Unmark -> new UnmarkCommand(getIndex(command));
-            case Delete -> new DeleteCommand(getIndex(command));
-            case Date -> new DateCommand(description);
-            case Find -> new FindCommand(description);
-            case Todo -> new AddCommand(description, "todo");
-            case Deadline -> new AddCommand(description, "deadline", getDeadline(command));
-            case Event -> new AddCommand(description, "event", getFrom(command), getTo(command));
+            case LIST -> new ListCommand();
+            case BYE -> new ExitCommand();
+            case MARK -> new MarkCommand(getIndex(command));
+            case UNMARK -> new UnmarkCommand(getIndex(command));
+            case DELETE -> new DeleteCommand(getIndex(command));
+            case DATE -> new DateCommand(description);
+            case FIND -> new FindCommand(description);
+            case TODO -> new AddCommand(description, "todo");
+            case DEADLINE -> new AddCommand(description, "deadline", getDeadline(command));
+            case EVENT -> new AddCommand(description, "event", getFrom(command), getTo(command));
             default -> throw new KhatException("Invalid command!");
         };
     }
