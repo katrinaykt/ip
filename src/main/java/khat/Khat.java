@@ -60,4 +60,8 @@ public class Khat {
     public static void main(String[] args) {
         new Khat("./data/KhatTasks.txt").run();
     }
+
+    public String getResponse(String input) {
+        return input;
+    }
 }
