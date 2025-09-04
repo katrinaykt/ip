@@ -15,19 +15,20 @@ public class Ui {
 
     private static final String DIVIDER = "___________________________________";
     private Scanner scanner = new Scanner(System.in);
+    private StringBuilder lastMessages = new StringBuilder();
 
     /**
      * Shows welcome message.
      */
     public void showWelcome() {
-        System.out.println("Hello! I'm Khat.\nStart keeping track of all your tasks by sending a short command!");
+        showMessage("Hello! I'm Khat.\nStart keeping track of all your tasks by sending a short command!");
     }
 
     /**
      * Shows exit message.
      */
     public void showExit() {
-        System.out.println("BYE. Hope to see you again soon!");
+        showMessage("Bye. Hope to see you again soon!");
     }
 
     /**
@@ -42,11 +43,12 @@ public class Ui {
     /** Shows divider line. */
     public void showDivider() {
         System.out.println(DIVIDER);
+        lastMessages.append("DIVIDER\n");
     }
 
     /** Shows an error message when loading previous tasks fails. */
     public void showLoadingError() {
-        System.out.println("Error loading previous tasks! Creating a new task list.");
+        showMessage("Error loading previous tasks! Creating a new task list.");
     }
 
     /**
@@ -56,6 +58,7 @@ public class Ui {
      */
     public void showMessage(String message) {
         System.out.println(message);
+        lastMessages.append(message).append("\n");
     }
 
     /**
@@ -65,10 +68,10 @@ public class Ui {
      */
     public void showTasks(TaskList tasks) {
         ArrayList<Task> taskArr = tasks.getAllTasks();
-        System.out.println("List of tasks:");
+        showMessage("List of tasks:");
         for (int i = 0; i < taskArr.size(); i++) {
             Task currTask = taskArr.get(i);
-            System.out.println(i + 1 + "." + currTask.toString());
+            showMessage(i + 1 + "." + currTask.toString());
         }
     }
 
@@ -81,13 +84,13 @@ public class Ui {
     public void showTasksOnDate(TaskList tasks, LocalDate date) {
         ArrayList<Task> taskArr = tasks.getAllTasks();
         if (!taskArr.isEmpty()) {
-            System.out.println("Deadlines on " + date + ":");
+            showMessage("Deadlines on " + date + ":");
             for (int i = 0; i < taskArr.size(); i++) {
                 Task currTask = taskArr.get(i);
-                System.out.println(i + 1 + "." + currTask.toString());
+                showMessage(i + 1 + "." + currTask.toString());
             }
         } else {
-            System.out.println("No deadlines on " + date);
+            showMessage("No deadlines on " + date);
         }
     }
 
@@ -99,14 +102,24 @@ public class Ui {
      */
     public void showTasksWithKeyword(TaskList tasks, String keyword) {
         if (tasks.getSize() > 0) {
-            System.out.printf("Here are the matching tasks in your list with keyword '%s':\n", keyword);
+            showMessage("Here are the matching tasks in your list with keyword " + keyword + ":\n");
             for (int i = 0; i < tasks.getSize(); i++) {
                 Task t = tasks.getTask(i);
-                System.out.println(i + 1 + "." + t.toString());
+                showMessage(i + 1 + "." + t.toString());
             }
         } else {
-            System.out.println("There are no matching tasks!");
+            showMessage("There are no matching tasks!");
         }
+    }
+
+    /**
+     * Method to retrieve messages for GUI
+     * @return Output String
+     */
+    public String consumeLastMessages() {
+        String output = lastMessages.toString();
+        lastMessages.setLength(0); // clear after consuming
+        return output;
     }
 
 }

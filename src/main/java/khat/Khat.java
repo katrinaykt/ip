@@ -60,4 +60,15 @@ public class Khat {
     public static void main(String[] args) {
         new Khat("./data/KhatTasks.txt").run();
     }
+
+    public String getResponse(String input) {
+        try {
+            Command c = Parser.parse(input);
+            c.execute(tasks, ui, storage);
+            return ui.consumeLastMessages();
+        } catch (KhatException e) {
+            ui.showMessage(e.getMessage());
+            return ui.consumeLastMessages();
+        }
+    }
 }

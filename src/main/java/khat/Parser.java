@@ -50,8 +50,14 @@ public class Parser {
     public static String getDescription(String command) {
         String description = command.split("/")[0]
                 .substring(command.split("/")[0].indexOf(' ') + 1).trim();
+        CommandType type = getCommandType(command);
         if (description.isEmpty()) {
-            throw new EmptyTaskException("Task description cannot be empty!");
+            throw new EmptyTaskException("");
+        } else if (!(type == CommandType.LIST) && !(type == CommandType.BYE)) {
+            boolean isEmpty = description.equals(command.trim());
+            if (isEmpty) {
+                throw new EmptyTaskException("");
+            }
         }
         return description;
     }
@@ -89,6 +95,9 @@ public class Parser {
      */
     public static Command parse(String command) throws KhatException {
         CommandType type = getCommandType(command);
+        if (type == CommandType.UNKNOWN) {
+            throw new KhatException("Invalid command!");
+        }
         String description = getDescription(command);
         return switch (type) {
             case LIST -> new ListCommand();
@@ -101,7 +110,7 @@ public class Parser {
             case TODO -> new AddCommand(description, "todo");
             case DEADLINE -> new AddCommand(description, "deadline", getDeadline(command));
             case EVENT -> new AddCommand(description, "event", getFrom(command), getTo(command));
-            default -> throw new KhatException("Invalid command!");
+            default -> throw new KhatException("Invalid command!"); // should not reach
         };
     }
     //CHECKSTYLE.ON: Indentation
@@ -141,7 +150,7 @@ public class Parser {
     public static String getFrom(String command) {
         String[] commandArr = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
         if (commandArr.length < 3) {
-            throw new EventTaskException("Add an event task in the format 'event [task] /from [start] /to [end]!'");
+            throw new EventTaskException("");
         }
         return commandArr[1].trim();
     }
@@ -156,7 +165,7 @@ public class Parser {
     public static String getTo(String command) {
         String[] commandArr = command.split("/from|/to"); // [0] -> type, [1] -> from, [2] -> to
         if (commandArr.length < 3) {
-            throw new EventTaskException("Add an event task in the format 'event [task] /from [start] /to [end]!'");
+            throw new EventTaskException("");
         }
         return commandArr[2].trim();
     }
