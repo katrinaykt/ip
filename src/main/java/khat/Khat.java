@@ -62,6 +62,13 @@ public class Khat {
     }
 
     public String getResponse(String input) {
-        return input;
+        try {
+            Command c = Parser.parse(input);
+            c.execute(tasks, ui, storage);
+            return ui.consumeLastMessages();
+        } catch (KhatException e) {
+            ui.showMessage(e.getMessage());
+            return ui.consumeLastMessages();
+        }
     }
 }

@@ -22,12 +22,15 @@ public class MainWindow extends AnchorPane {
 
     private Khat khat;
 
-    private Image cinaImage = new Image(this.getClass().getResourceAsStream("/images/cina.jpg"));
-    private Image lbxxImage = new Image(this.getClass().getResourceAsStream("/images/lbxx.jpg"));
+    private Image cinaImage = new Image(this.getClass().getResourceAsStream("/images/cina.png"));
+    private Image lbxxImage = new Image(this.getClass().getResourceAsStream("/images/lbxx.png"));
 
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        dialogContainer.getChildren().add(
+                DialogBox.getKhatDialog("Hello! I'm Khat.\nStart keeping track of all your tasks by sending a short command!", lbxxImage)
+        );
     }
 
     /** Injects the Duke instance */
