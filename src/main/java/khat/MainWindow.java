@@ -29,7 +29,8 @@ public class MainWindow extends AnchorPane {
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
         dialogContainer.getChildren().add(
-                DialogBox.getKhatDialog("Hello! I'm Khat.\nStart keeping track of all your tasks by sending a short command!", lbxxImage)
+                DialogBox.getKhatDialog("Hello! I'm Khat.\n"
+                        + "Start keeping track of all your tasks by sending a short command!", lbxxImage)
         );
     }
 
