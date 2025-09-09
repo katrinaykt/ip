@@ -2,6 +2,7 @@ package khat.task;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /** Represents a list of tasks. */
 public class TaskList {
@@ -69,22 +70,16 @@ public class TaskList {
      * @param date Date to filter deadlines by.
      */
     public TaskList getTasksOnDate(LocalDate date) {
-        TaskList t = new TaskList();
-        for (Task currTask : tasks) {
-            boolean match = false;
-            if (currTask instanceof Deadline) {
-                Deadline d = (Deadline) currTask;
-                if (d.hasTime()) {
-                    match = d.dateTime.toLocalDate().equals(date);
-                } else {
-                    match = d.date.equals(date);
-                }
-            }
-            if (match) {
-                t.addTask(currTask);
-            }
-        }
-        return t;
+        List<Task> filtered = tasks.stream()
+                .filter(task -> task instanceof Deadline)
+                .filter(task -> {
+                    Deadline d = (Deadline) task;
+                    return d.hasTime()
+                            ? d.dateTime.toLocalDate().equals(date)
+                            : d.date.equals(date);
+                })
+                .toList();
+        return new TaskList(new ArrayList<>(filtered));
     }
 
     /**
@@ -93,15 +88,9 @@ public class TaskList {
      * @param keyword Keyword to filter tasks by.
      */
     public TaskList getTasksWithKeyword(String keyword) {
-        TaskList filteredTasks = new TaskList();
-        boolean containsKeyword;
-        for (Task t : tasks) {
-            String description = t.getDescription();
-            containsKeyword = description.contains(keyword);
-            if (containsKeyword) {
-                filteredTasks.addTask(t);
-            }
-        }
-        return filteredTasks;
+        List<Task> filtered = tasks.stream()
+                .filter(t -> t.getDescription().contains(keyword))
+                .toList();
+        return new TaskList(new ArrayList<>(filtered));
     }
 }
