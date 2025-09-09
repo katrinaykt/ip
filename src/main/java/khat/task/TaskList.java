@@ -103,4 +103,40 @@ public class TaskList {
                 .toList();
         return new TaskList(new ArrayList<>(filtered));
     }
+
+    /**
+     * Checks if a Task already exists in TaskList.
+     *
+     * @param newTask Task to be added
+     * @return True if Tasks exists, false otherwise.
+     */
+    public boolean isDuplicate(Task newTask) {
+        for (Task t : tasks) {
+            if (t instanceof Todo && newTask instanceof Todo) {
+                if (t.getDescription().equalsIgnoreCase(newTask.getDescription())) {
+                    return true;
+                }
+            } else if (t instanceof Deadline && newTask instanceof Deadline) {
+                Deadline d1 = (Deadline) t;
+                Deadline d2 = (Deadline) newTask;
+                boolean descMatch = d1.getDescription().equalsIgnoreCase(d2.getDescription());
+                boolean dateMatch = d1.hasTime() == d2.hasTime() && (d1.hasTime()
+                                ? d1.dateTime.equals(d2.dateTime)
+                                : d1.date.equals(d2.date));
+                if (descMatch && dateMatch) {
+                    return true;
+                }
+            } else if (t instanceof Event && newTask instanceof Event) {
+                Event e1 = (Event) t;
+                Event e2 = (Event) newTask;
+                boolean descMatch = e1.getDescription().equalsIgnoreCase(e2.getDescription());
+                boolean fromMatch = e1.from.equals(e2.from);
+                boolean toMatch = e1.to.equals(e2.to);
+                if (descMatch && fromMatch && toMatch) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

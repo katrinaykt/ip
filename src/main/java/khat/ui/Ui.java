@@ -97,7 +97,7 @@ public class Ui {
      */
     public void showTasksWithKeyword(TaskList tasks, String keyword) {
         if (!tasks.isEmpty()) {
-            showMessage("Here are the matching tasks in your list with keyword " + keyword + ":\n");
+            showMessage("Here are the matching tasks in your list with keyword " + keyword + ":");
             showTasks(tasks);
         } else {
             showMessage("There are no matching tasks!");
