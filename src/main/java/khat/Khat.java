@@ -25,6 +25,8 @@ public class Khat {
      * @param filePath Path to the file for tasks.
      */
     public Khat(String filePath) {
+        assert filePath != null : "File path should not be null";
+        assert !filePath.isEmpty() : "File path should not be empty";
         ui = new Ui();
         storage = new Storage(filePath);
         try {
