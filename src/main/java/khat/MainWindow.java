@@ -35,6 +35,7 @@ public class MainWindow extends AnchorPane {
 
     /** Injects the Duke instance */
     public void setKhat(Khat k) {
+        assert k != null : "Khat instance should not be null";
         khat = k;
     }
 
