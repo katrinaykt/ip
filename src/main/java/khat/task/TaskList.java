@@ -47,6 +47,15 @@ public class TaskList {
     }
 
     /**
+     * Returns true if TaskList is empty.
+     *
+     * @return True if TaskList is empty, false otherwise.
+     */
+    public boolean isEmpty() {
+        return (tasks.isEmpty());
+    }
+
+    /**
      * Adds a task to the task list.
      *
      * @param t Task to be added.
@@ -70,6 +79,7 @@ public class TaskList {
      * @param date Date to filter deadlines by.
      */
     public TaskList getTasksOnDate(LocalDate date) {
+        assert date != null : "Date to filter cannot be null";
         List<Task> filtered = tasks.stream()
                 .filter(task -> task instanceof Deadline)
                 .filter(task -> {

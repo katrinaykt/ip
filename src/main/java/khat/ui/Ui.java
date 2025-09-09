@@ -1,7 +1,6 @@
 package khat.ui;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import khat.task.Task;
@@ -66,12 +65,12 @@ public class Ui {
      *
      * @param tasks The task list containing all tasks.
      */
-    public void showTasks(TaskList tasks) {
-        ArrayList<Task> taskArr = tasks.getAllTasks();
-        showMessage("List of tasks:");
-        for (int i = 0; i < taskArr.size(); i++) {
-            Task currTask = taskArr.get(i);
-            showMessage(i + 1 + "." + currTask.toString());
+    public void showAllTasks(TaskList tasks) {
+        if (!tasks.isEmpty()) {
+            showMessage("List of tasks:");
+            showTasks(tasks);
+        } else {
+            showMessage("There are no tasks yet!");
         }
     }
 
@@ -82,13 +81,9 @@ public class Ui {
      * @param date The date to display tasks for.
      */
     public void showTasksOnDate(TaskList tasks, LocalDate date) {
-        ArrayList<Task> taskArr = tasks.getAllTasks();
-        if (!taskArr.isEmpty()) {
+        if (!tasks.isEmpty()) {
             showMessage("Deadlines on " + date + ":");
-            for (int i = 0; i < taskArr.size(); i++) {
-                Task currTask = taskArr.get(i);
-                showMessage(i + 1 + "." + currTask.toString());
-            }
+            showTasks(tasks);
         } else {
             showMessage("No deadlines on " + date);
         }
@@ -101,19 +96,24 @@ public class Ui {
      * @param keyword Keyword to filter tasks by.
      */
     public void showTasksWithKeyword(TaskList tasks, String keyword) {
-        if (tasks.getSize() > 0) {
+        if (!tasks.isEmpty()) {
             showMessage("Here are the matching tasks in your list with keyword " + keyword + ":\n");
-            for (int i = 0; i < tasks.getSize(); i++) {
-                Task t = tasks.getTask(i);
-                showMessage(i + 1 + "." + t.toString());
-            }
+            showTasks(tasks);
         } else {
             showMessage("There are no matching tasks!");
         }
     }
 
+    private void showTasks(TaskList tasks) {
+        for (int i = 0; i < tasks.getSize(); i++) {
+            Task t = tasks.getTask(i);
+            showMessage(i + 1 + "." + t.toString());
+        }
+    }
+
     /**
      * Method to retrieve messages for GUI
+     *
      * @return Output String
      */
     public String consumeLastMessages() {
