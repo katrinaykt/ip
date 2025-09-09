@@ -83,9 +83,13 @@ public class AddCommand extends Command {
             default -> throw new KhatException("Invalid task!");
         };
         //CHECKSTYLE.ON: Indentation
-        tasks.addTask(t);
-        ui.showMessage("Got it. I've added this task:\n" + t);
-        ui.showMessage("Now you have " + tasks.getSize() + " tasks in the list.");
+        if (tasks.isDuplicate(t)) {
+            ui.showMessage("This task appears to be a duplicate!\n I'll skip adding this task.");
+        } else {
+            tasks.addTask(t);
+            ui.showMessage("Got it. I've added this task:\n" + t);
+            ui.showMessage("Now you have " + tasks.getSize() + " tasks in the list.");
+        }
         storage.saveTasks(tasks);
     }
 }
