@@ -112,7 +112,7 @@ public class Ui {
     }
 
     /**
-     * Method to retrieve messages for GUI
+     * Retrieves messages for GUI
      *
      * @return Output String
      */
