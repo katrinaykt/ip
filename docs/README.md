@@ -1,30 +1,183 @@
-# Duke User Guide
+# Khat User Guide
 
-// Update the title above to match the actual product name
+Welcome to Khat, your personal task management chatbot!
+This guide will help you get started with using Khat to manage your tasks efficiently.
+Khat is a simple, friendly chatbot that helps you manage your tasks from the GUI.
+---
 
-// Product screenshot goes here
+## Quick Start
 
-// Product intro goes here
+1. Ensure you have Java 17 or above installed in your Computer.
 
-## Adding deadlines
+2. Download the latest .jar file from here.
 
-// Describe the action and its outcome.
+3. Copy the file to the folder you want to use as the home folder for your Khat chatbot.
 
-// Give examples of usage
+4. Open a command terminal, cd into the folder you put the jar file in, and use the java -jar khat.jar command to run the application.
+   A GUI similar to the below should appear in a few seconds. ![Khat UI Screenshot](docs/ui.png)
+5. Start typing commands to manage your tasks!
+6. Refer to the [Features](#features) section below for a list of commands you can use.
+---
 
-Example: `keyword (optional arguments)`
+## Features
 
-// A description of the expected outcome goes here
+### 1. Adding Todos
 
+Add a simple task to your list.
+
+**Usage:**  
+`todo <task description>`
+
+**Example:**  
+`todo read book`
+
+**Expected outcome:**  
+Khat adds the todo and confirms:
 ```
-expected output
+Got it. I've added this task:
+[T][ ] read book
+Now you have X tasks in the list.
 ```
 
-## Feature ABC
+### 2. Adding Deadlines
 
-// Feature details
+Add a task with a specific deadline.
 
+**Usage:**  
+`deadline <task description> /by <date or date time>`
 
-## Feature XYZ
+**Example:**  
+`deadline submit report /by 16-09-2025`
 
-// Feature details
+**Expected outcome:**  
+Khat adds the deadline task and confirms:
+```
+Got it. I've added this task:
+[D][ ] submit report (by: 16 Sep 25)
+Now you have X tasks in the list.
+```
+
+### 3. Adding Events
+
+Add a task that happens at a specific time.
+
+**Usage:**  
+`event <task description> /from <start> /to <end>`
+
+**Example:**  
+`event team meeting /from 05-05-2025 5pm /to 6pm`
+
+**Expected outcome:**  
+Khat adds the event and confirms:
+```
+Got it. I've added this task:
+[E][ ] team meeting (from: 05-05-2025 5pm to: 6pm)
+Now you have X tasks in the list.
+```
+
+### 4. Listing Tasks
+
+Show all your tasks with their status.
+
+**Usage:**  
+`list`
+
+**Expected outcome:**  
+Khat displays your current tasks:
+```
+List of tasks:
+1.[T][ ] read book
+2.[D][ ] submit report (by: 16 Sep 25)
+3.[E][ ] team meeting (from: 05-05-2025 5pm to: 6pm)
+```
+
+### 5. Marking Tasks as Done
+
+Mark a task as completed.
+
+**Usage:**  
+`mark <task number>`
+
+**Example:**  
+`mark 2`
+
+**Expected outcome:**  
+Khat marks the task as done:
+```
+Nice! I've marked this task as done:
+[D][X] submit report (by: 16 Sep 25)
+```
+### 6. Unmarking Tasks
+Mark a task as not completed.
+
+**Usage:**
+`unmark <task number>`
+
+**Example:**
+`unmark 2`
+
+**Expected outcome:**
+Khat marks the task as not done:
+```
+OK, I've marked this task as not done yet:
+[D][ ] submit report (by: 16 Sep 25)
+```
+
+### 7. Deleting Tasks
+
+Remove a task from your list.
+
+**Usage:**
+`delete <task number>`
+
+**Example:**
+`delete 3`
+
+**Expected outcome:**
+Khat deletes the task and confirms:
+```
+Ok, I've removed this task:
+[E][ ] team meeting (from: 05-05-2025 5pm to: 6pm)
+There are X remaining tasks.
+```
+### 8. Find Tasks on a specific date
+Search for deadline tasks on a specific date.
+
+**Usage:**
+`date <date>`
+**Example:**
+`date 16-09-2025`
+**Expected outcome:**
+Khat lists matching deadline tasks:
+```
+Here are the tasks on 2025-09-05:
+1.[D][ ] submit report (by: 16 Sep 25)
+```
+
+### 9. Finding Tasks
+Search for tasks containing a specific keyword.
+
+**Usage:**
+`find <keyword>`
+
+**Example:**
+`find book`
+
+**Expected outcome:**
+Khat lists matching tasks:
+```
+Here are the matching tasks in your list with keyword book:
+1.[T][ ] read book
+```
+
+### 10. Exiting the Application
+Exits the application.
+
+**Usage:**
+`bye`
+
+**Expected outcome:**
+Khat says goodbye and exits:
+```
+Bye. Hope to see you again soon!
+```
