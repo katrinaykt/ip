@@ -16,7 +16,9 @@ Khat is a simple, friendly chatbot that helps you manage your tasks from the GUI
 
 4. Open a command terminal, cd into the folder you put the jar file in, and use the java -jar khat.jar command to run the application.
    A GUI similar to the below should appear in a few seconds.
-   ![Khat UI Screenshot](./Ui.png)
+   
+![Khat UI Screenshot](./Ui.png)
+
 5. Start typing commands to manage your tasks!
 6. Refer to the [Features](#features) section below for a list of commands you can use.
 
